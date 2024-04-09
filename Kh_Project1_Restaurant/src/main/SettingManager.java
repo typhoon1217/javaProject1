@@ -31,26 +31,26 @@ public class SettingManager {	//싱글톤 연습
 
 	//출력:전체 테이블 업데이트후 출력
     public void listAllTable() {
+    	System.out.println(RestaurantMain.BAR);
         resetTableArray();
         printAllTable(tableArray);
     }
   	
   	//업데이트:테이블 정보
-    public String[][] resetTableArray() {
-    	//자료 남는걸 방지하기 위해 2차원배열 초기화
+    public String[][] resetTableArray() {		//자료 남는걸 방지하기 위해 배열 초기화
     	for (int i = 0; i < tableArray.length; i++) {
             for (int j = 0; j < tableArray[i].length; j++) {
                 tableArray[i][j] = null;
             }
         } 			
-  	    File dir =new File(TABLE_DIR);        //테이블 폴더
-  	    File[]tables=dir.listFiles();        //디렉토리내 모든 파일과 디렉토리 가져옴
+  	    File dir =new File(TABLE_DIR);        	//테이블 폴더
+  	    File[]tables=dir.listFiles();        	//디렉토리내 모든 파일과 디렉토리 가져옴
 
   	    for(File file: tables) {
   	        if(file.isFile()) {
   	            String fileName = file.getName();
-  	            if (fileName.endsWith(".txt")) { //. txt 파일인지 확인
-  	                char row = fileName.charAt(0);  //행정보로 사용할 첫 알파벳 추출
+  	            if (fileName.endsWith(".txt")) { 		//. txt 파일인지 확인
+  	                char row = fileName.charAt(0);  	//행정보로 사용할 첫 알파벳 추출
   	                int col = Integer.parseInt(fileName.substring(1,fileName.length()-4));//열정보 나중에 2자리수 이상 쓸것을 대비 .txt만 지우고 1~.txt 이전까지 지정
   	                if (row >= ROW_START && row <= ROW_END && col >= COL_START && col <= COL_END) {//범위에 있는지 확인
   	                    // 해당 테이블을 2차원 배열에 추가

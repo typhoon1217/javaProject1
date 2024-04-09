@@ -42,7 +42,7 @@ public class OrderManager {
         try (FileWriter writer = new FileWriter(tableFile, false)) {
             for (OrderItem item : orderList) {
                 Food food = item.getFood();
-                writer.write(food.getId() + ", " + food.getCategory() + ", " + food.getComment() + ", " + food.getName() + ", " + food.getPrice() + ", 수량: " + item.getQuantity() + "\n");
+                writer.write(food.getId() + ", " + food.getName() + ", " + food.getPrice() + ", 수량: " + item.getQuantity() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,17 +57,17 @@ public class OrderManager {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(", ");
-  
-                Food food = new Food(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]));
-                String[] quantityParts = parts[5].split(": ");
-                if (quantityParts.length < 2) {
-                    System.out.println("수량 정보가 잘못되었습니다: " + parts[5]);
-                    continue;
-                }
+                
+                Food food = new Food(parts[0], parts[1], Integer.parseInt(parts[2]));
+                String[] quantityParts = parts[3].split(": ");
+//                if (quantityParts.length < 2) {
+//                    System.out.println("수량 정보가 잘못되었습니다: " + parts[5]);
+//                    continue;
+//                }
                 int quantity;
                 try {
                     quantity = Integer.parseInt(quantityParts[1]);
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     System.out.println("수량을 숫자로 변환할 수 없습니다: " + quantityParts[1]);
                     continue;
                 }

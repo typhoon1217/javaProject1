@@ -212,6 +212,7 @@ public class RestaurantMain {
 
 	private static void menuDeleteTable() {
 		System.out.println(BAR);
+		toMainIfDirIsEmpty();
 		System.out.println("1. 테이블 삭제");
 		System.out.println("2. 전체 테이블 삭제");
 		System.out.println(BAR);
@@ -245,8 +246,7 @@ public class RestaurantMain {
 		//			}
 		//		}
 		settingManager.listAllTable();
-		String tab=inputFileName();
-		tableNumber.append(tab);
+		inputTableNum();
 		delFileInTableNum();
 		System.out.println("테이블 번호: " + tableNumber + "이(가) 성공적으로 삭제되었습니다.");
 
@@ -402,15 +402,14 @@ public class RestaurantMain {
 		settingManager.listAllTable();
 		System.out.println(BAR);
 		System.out.println("주문받을 테이블 번호를 입력해주세요");
-		String table = inputFileName();
-		tableNumber.setLength(0);							// 기존 내용을 지웁니다
-		tableNumber.append(table);							// 새로운 테이블 번호를 저장합니다
+		toMainIfDirIsEmpty();
+		inputTableNum();
 		System.out.print("안녕하세요 ");
 
 		String regex = "([0-5])";							
 		boolean flag = false;
 		while (!flag) {										//display order list 추가하까? 하면 3번 삭제 ㄱ
-			System.out.println(table + " 테이블 고객님, 무엇을 도와드릴까요?");
+			System.out.println(tableNumber + " 테이블 고객님, 무엇을 도와드릴까요?");
 			System.out.println(BAR);
 			System.out.println("0. 메뉴표시\t\t1. 주문 추가");
 			System.out.println("2. 주문 제거\t\t3. 주문 확인");
@@ -651,5 +650,28 @@ public class RestaurantMain {
 	    File table = new File(SettingManager.TABLE_DIR, tableNum2 + ".txt");
 	    return table;
 	}
+	
+	//#.입력: 전역변수 테이블 번호 수정하는 메서드(전역변수 테이블 리셋)
+	public static void inputTableNum() {
+		String table=inputFileName();
+		tableNumber.setLength(0);							// 기존 내용을 지웁니다
+		tableNumber.append(table);							// 새로운 테이블 번호를 저장합니다
+	}
+	
+	//#.테이블 디렉토리가 비여있을 경우 메인선택창으로 돌아가기 
+	public static final String TABLE_DIR = "./table"; 
+
+	public static void toMainIfDirIsEmpty() {
+	    File dir = new File(TABLE_DIR);
+	    File[] files = dir.listFiles();
+	    if (files != null && files.length > 0) {
+	        // 디렉토리가 비어 있지 않습니다. 다음 단계로 넘어감
+	    } else {
+	        System.out.println("테이블이 없습니다.");
+	        introMenu();  // introMenu 메소드를 호출
+	    }
+	}
+
+
 
 }//end of Main class

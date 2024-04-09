@@ -5,15 +5,12 @@ import java.util.Objects;
 public class Food extends FoodItem{
     private String category;
     private String comment;
-    
-    public Food() {
-    }
 
 	public Food(String id, String name, int price) {
 		super(id, name, price);
 	}
     
-	public Food(String id, String category, String comment, String name, int price) {
+	public Food(String id, String category, String name, int price, String comment) {
 		super(id, name, price);
 		this.category = category;
 		this.comment = comment;

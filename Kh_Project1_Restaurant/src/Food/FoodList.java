@@ -15,33 +15,15 @@ public class FoodList {        //싱글톤 사용
         this.setFoods(new ArrayList<>());
         
         // 초기값
-        this.getFoods().add(new Food("A1","한식"
-        		, "계절 메뉴 "
-        		, "냉면", 12000));
-        this.getFoods().add(new Food("A2","한식"
-        		, "셰프 강력 추천 "
-        		, "쫄면", 8000));
-        this.getFoods().add(new Food("A3","한식"
-        		, "강추 "
-        		, "고기국수", 9000));
-        this.getFoods().add(new Food("B1","중식"
-        		, "하루 10접시 한정 "
-        		, "자작면", 7000));
-        this.getFoods().add(new Food("B2","중식"
-        		, "맵찔이는 가라 "
-        		, "마라우육면", 12000));
-        this.getFoods().add(new Food("B3","중식"
-        		, "칼로리 폭탄(맛있다는 뜻) "
-        		, "볶음면", 8000));
-        this.getFoods().add(new Food("C1","일식"
-        		, "시원한 "
-        		, "냉모밀", 9000));
-        this.getFoods().add(new Food("C2","일식"
-        		, "셰츠의 강력 추천"
-        		, "라멘", 12000));
-        this.getFoods().add(new Food("C3","일식"
-        		, "쫄깃한 쫄깃한"
-        		, "우동", 9000));
+        this.getFoods().add(new Food("A1","한식", "냉면", 12000, "계절 메뉴 "));
+        this.getFoods().add(new Food("A2","한식", "쫄면", 8000, "셰프 강력 추천 "));
+        this.getFoods().add(new Food("A3","한식", "고기국수", 9000, "강추 "));
+        this.getFoods().add(new Food("B1","중식", "자작면", 7000, "하루 10접시 한정 "));
+        this.getFoods().add(new Food("B2","중식", "마라우육면", 12000, "맵찔이는 가라 "));
+        this.getFoods().add(new Food("B3","중식", "볶음면", 8000, "칼로리 폭탄(맛있다는 뜻) "));
+        this.getFoods().add(new Food("C1","일식", "냉모밀", 9000, "시원한 "));
+        this.getFoods().add(new Food("C2","일식", "라멘", 12000, "셰츠의 강력 추천"));
+        this.getFoods().add(new Food("C3","일식", "우동", 9000, "쫄깃한 쫄깃한"));
     }
     public static FoodList getInstance() {
         if (instance == null) {
