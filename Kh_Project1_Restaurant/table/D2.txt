@@ -1,0 +1,17 @@
+	public static void addOrder() {
+	    // 해당 테이블 파일을 확인합니다.
+	    File tableFile = new File(SettingManager.TABLE_DIR, tableNumber.toString() + ".txt");
+	    if (tableFile.exists()) {
+	        // 음식명을 입력하고, 입력한 음식이 메뉴에 있는지 확인합니다.
+	        String foodName = inputFoodExist();
+
+	        // 메뉴에서 음식 정보를 받아와 주문 목록에 추가합니다.
+	        Food food = getFoodInfoFromMenu(foodName); 
+	        orderManager.addOrderItem(food, tableFile);
+	        updateTableFile();
+	    } else {
+	        System.out.println("입력하신 테이블이 존재하지 않습니다.");
+	    }
+	}
+
+메인클래스에서 해당 메서드로 싱글톤 인스턴스를 호출해서 사용하도록 수정
