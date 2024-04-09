@@ -95,7 +95,7 @@ public class RestaurantMain {
 
 	public static void introMenu() {
 		settingManager.listAllTable();
-		String greeting = "안녕하세요 " + SettingManager.R_NAME + "을 방문해주셔서 감사합니다.";
+		String greeting = "안녕하세요 " + SettingManager.R_NAME + "에 방문해주셔서 감사합니다.";
 		String regexMenu = "([0-4])"; // 입력값 범위
 		boolean flag = false;
 		while (!flag) {
@@ -208,66 +208,18 @@ public class RestaurantMain {
 		}
 	} // end of menuSetTable
 
-	//1.4테이블 삭제 선택창
+	//4테이블 삭제 선택창
 
 	private static void menuDeleteTable() {
 		System.out.println(BAR);
 		toMainIfDirIsEmpty();
-		System.out.println("1. 테이블 삭제");
-		System.out.println("2. 전체 테이블 삭제");
-		System.out.println(BAR);
+		System.out.println("1: 테이블 삭제\n2: 전체 테이블 삭제");
 		boolean response = Input1or2();
 		if (response) {
 			deleteATable();
 		} else {
 			deleteAllTables();
 		}
-	}
-
-	//1.4.1테이블 선택 삭제
-
-	public static void deleteATable() {
-		//		settingManager.listAllTable();
-		//		boolean flag = false;
-		//		while (!flag) {
-		//			String tableToDelete = InputTableNumber(); // 테이블 번호 입력 메서드
-		//			File file = new File(TABLE_DIR, tableToDelete + ".txt"); // 디렉토리와 파일명을 조합하여 파일 생성
-		//
-		//			if (file.exists()) {
-		//				if (file.delete()) {
-		//					settingManager.listAllTable();
-		//					System.out.println("테이블 번호: " + tableToDelete + "이(가) 성공적으로 삭제되었습니다.");
-		//					flag = true;
-		//				} else {
-		//					System.out.println("테이블 삭제에 실패했습니다.");
-		//				}
-		//			} else {
-		//				System.out.println("해당 번호의 테이블이 존재하지 않습니다. 다른 테이블을 선택해주세요.");
-		//			}
-		//		}
-		settingManager.listAllTable();
-		inputTableNum();
-		delFileInTableNum();
-		System.out.println("테이블 번호: " + tableNumber + "이(가) 성공적으로 삭제되었습니다.");
-
-
-
-	} // end of deleteATable
-
-	//1.4.2전체 테이블 삭제
-
-	private static void deleteAllTables() {
-		File dir = setFileTxt(tableNumber.toString()); 
-		File[] files = dir.listFiles();
-		if(files != null) { // 디렉토리가 비어있지 않은 경우
-			for (File file : files) {
-				if (!file.isDirectory()) { 
-					file.delete();
-					System.out.println("전부 삭제 했습니다.");
-				}
-			}
-		}else
-			System.out.println("이미 비여있습니다.");
 	}
 
 	//@.0 관리자메뉴
@@ -399,10 +351,10 @@ public class RestaurantMain {
 	//2 주문 메뉴
 
 	public static void menuLoadTable() {
+		toMainIfDirIsEmpty();
 		settingManager.listAllTable();
 		System.out.println(BAR);
 		System.out.println("주문받을 테이블 번호를 입력해주세요");
-		toMainIfDirIsEmpty();
 		inputTableNum();
 		System.out.print("안녕하세요 ");
 
@@ -456,9 +408,11 @@ public class RestaurantMain {
 
 	private static void printReceipt() {
 		// 주문 목록을 출력합니다
+		System.out.println(BAR);
 		displayOrderList();
 
 		// 사용자에게 결제 여부를 묻습니다
+		System.out.println(BAR);
 		System.out.println("결제하시겠습니까? (1: 예, 2: 아니오)");
 		boolean pay = Input1or2();
 
@@ -467,7 +421,7 @@ public class RestaurantMain {
 			int totalPrice = orderManager.getTotalPrice();
 
 			// 총 금액을 출력하고 감사 메시지를 표시합니다
-			System.out.println("총 금액은 " + totalPrice + " 원 입니다. 감사합니다 다음에 또 " +SettingManager.R_NAME+ "에 방문해 주십시오");
+			System.out.println("총 금액은 " + totalPrice + " 원 입니다. 감사합니다  \n다음에 또 " +SettingManager.R_NAME+ "에 방문해 주십시오");
 			delFileInTableNum(); //지정된 테이블 삭제
 			introMenu();
 		} else {
@@ -496,7 +450,9 @@ public class RestaurantMain {
 
 	public static void removeOrder() {
 		//주문 목록 출력
+		System.out.println(BAR);
 		displayOrderList();
+		System.out.println(BAR);
 	    // 해당 테이블 파일을 확인합니다.
 	    File table = setFileTxt(tableNumber.toString()); 
 	    
@@ -507,7 +463,31 @@ public class RestaurantMain {
 	    Food food = foodList.getFoodInfoFromMenu(foodName); 
 	    orderManager.removeOrderItem(food.getId(), table);
 	    updateTableFile();
+	}
+	
+	//4.1테이블 선택 삭제
 
+	public static void deleteATable() {
+		settingManager.listAllTable();
+		inputTableNum();
+		delFileInTableNum();
+		System.out.println("테이블 번호: " + tableNumber + "이(가) 성공적으로 삭제되었습니다.");
+
+	} // end of deleteATable
+
+	//4.2전체 테이블 삭제
+
+	private static void deleteAllTables() {
+		File dir = new File(SettingManager.TABLE_DIR);
+		File[] files = dir.listFiles();
+		if(files != null) { 
+			for (File file : files) {
+				if (!file.isDirectory()) { 
+					file.delete();
+				}
+			}System.out.println("전부 삭제 했습니다.");
+		}else
+			System.out.println("이미 비여있습니다.");
 	}
 	
 	//#. 주문(2.) 목록을 파일에 업데이트
@@ -574,7 +554,6 @@ public class RestaurantMain {
 
 	public static boolean Input1or2() {
 		while (true) {
-			System.out.println("원하는 작업을 선택하세요 (1/2):");
 			System.out.println(BAR);
 			String input = sc.nextLine();
 
