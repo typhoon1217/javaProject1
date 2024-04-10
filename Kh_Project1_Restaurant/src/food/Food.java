@@ -20,23 +20,28 @@ public class Food extends FoodItem{
 	public String getId() {
 		return foodid;
 	}
+	
 	@Override
 	public String getName() {
 		return foodName;
 	}
+	
 	@Override
 	public int getPrice() {
 		return foodPrice;
 	}
+	
 	@Override
 	public void setId(String id) {
 		this.foodid = id;
 	}
+	
 	@Override
 	public void setName(String name) {
 		this.foodName = name;
 		
 	}
+	
 	@Override
 	public void setPrice(int price) {
 		this.foodPrice = price;	
@@ -57,6 +62,7 @@ public class Food extends FoodItem{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
     @Override
     public int hashCode() {
         return Objects.hash(getName());

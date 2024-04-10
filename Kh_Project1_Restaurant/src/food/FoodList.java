@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import main.RestaurantMain;
 
-public class FoodList {        //싱글톤 사용
+public class FoodList {        //싱글톤 사용 메뉴는 변화가 없는 고정값
     private static FoodList instance = null;
     private ArrayList<Food> foods;
 
@@ -31,10 +31,7 @@ public class FoodList {        //싱글톤 사용
         }
         return instance;
     }
-//
-//    public ArrayList<Food> getFoods() {
-//        return this.foods;
-//    }
+
 
     public void addFood(Food food) {
         for (Food existingFood : getFoods()) {
@@ -48,10 +45,12 @@ public class FoodList {        //싱글톤 사용
         this.getFoods().add(food);
     }
 
+    
     public void removeFood(Food food) {
         this.getFoods().remove(food);
     }
    
+    
     public void sortFoodsById() {
         Collections.sort(getFoods(), new Comparator<Food>() {
             public int compare(Food f1, Food f2) {
@@ -59,7 +58,8 @@ public class FoodList {        //싱글톤 사용
             }
         });
     }
-     
+    
+    
     public Food getFoodInfoFromMenu(String foodName) {
         for (Food food : this.getFoods()) {  // this.getFoods() 대신 this.foods를 사용
             if (food.getName().equals(foodName)) {
@@ -78,10 +78,13 @@ public class FoodList {        //싱글톤 사용
 	    System.out.println(RestaurantMain.BAR);
 	}
 	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(getFoods());
 	}
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -93,11 +96,20 @@ public class FoodList {        //싱글톤 사용
 		FoodList other = (FoodList) obj;
 		return Objects.equals(getFoods(), other.getFoods());
 	}
+	
+	
 	public ArrayList<Food> getFoods() {
 		return foods;
 	}
+	
+	
 	public void setFoods(ArrayList<Food> foods) {
 		this.foods = foods;
 	}
     
 }
+
+//
+//public ArrayList<Food> getFoods() {
+//  return this.foods;
+//}

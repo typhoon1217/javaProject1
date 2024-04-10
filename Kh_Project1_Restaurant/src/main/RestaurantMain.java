@@ -23,7 +23,7 @@ public class RestaurantMain {
 	private static SettingManager settingManager = SettingManager.getInstance();
 	private static FoodList foodList = FoodList.getInstance();
 	private static OrderManager orderManager = new OrderManager();
-	private static Scanner sc = new Scanner(System.in); 
+	public static Scanner sc = new Scanner(System.in); 
 	private static StringBuffer tableNumber = new StringBuffer();
 	public static final String BAR = "=========================================";
  
@@ -37,20 +37,20 @@ public class RestaurantMain {
 
 	public static void reset() {			
 		//
-		Client.Login();						//클라이언트 로그인
+		Client.login();						//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
+		
 		//기능 테스트용
 		//introMenu();	                    //초기메뉴
-		
 		//AdminMenu();						//관리자 메뉴
 		//menuLoadTable();                  //주문메뉴
 		
-	
+	}
 
 	//로그인 
 	
-//	public static void login() {
+	public static void login() {
 //		try {
 //			boolean loggedIn = false;
 //			while (!loggedIn) {
@@ -94,124 +94,9 @@ public class RestaurantMain {
 //		} catch (Exception e) {
 //			System.out.println(e+"에러가 발생했습니다. 로그인을 재시도합니다.");
 //		}
-//	}
 	}
 	
-	
-	//0.0 관리자메뉴
-
-	public static void AdminMenu() {
-		System.out.println(BAR);
-		System.out.println("관리자 메뉴를 선택하세요:");
-		System.out.println("1. 직원 관리");
-		System.out.println("2. 메뉴 관리");
-		System.out.println("3. 메인 메뉴");
-		System.out.println(BAR);
-
-		String choice;
-		while (true) {
-			choice = sc.nextLine();
-			if (choice.matches("[123]")) {  // 정규식을 사용하여 1, 2, 3 중 하나인지 확인합니다.
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다. 1, 2, 3 중 하나를 입력해주세요.");
-			}
-		}
-
-		switch (choice) {
-		case "1":
-			manageUsers();
-			break;
-		case "2":
-			//ㅇㅇㅇㅇ();
-			break;
-		case "3":
-			System.out.println(BAR);
-			System.out.println("메인메뉴 실행.");
-			introMenu();	
-		}
-	}
-
-	//0.1 유저관리 메서드
-
-	public static void manageUsers() {
-		try {
-			List<String> employees = getEmployees();  // 직원 목록을 가져옵니다.
-			for (String employee : employees) {
-				System.out.println(employee);  // 각 직원의 정보를 출력합니다.
-			}
-
-			System.out.println(BAR);
-			System.out.println("1. 직원 추가");
-			System.out.println("2. 직원 삭제");
-
-			String choice;
-			while (true) {
-				choice = sc.nextLine();
-				if (choice.matches("[12]")) {  // 정규식을 사용하여 1 또는 2인지 확인합니다.
-					break;
-				} else {
-					System.out.println("잘못된 입력입니다. 1 또는 2를 입력해주세요.");
-				}
-			}
-			switch (choice) {
-			case "1":
-				addUser();
-				break;
-			case "2":
-				deleteUser();
-				break;
-			}
-			AdminMenu();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	//0.1.1 직원 추가 메서드
-
-	public static void addUser() throws IOException {
-		System.out.println(BAR);
-		System.out.println("추가할 직원의 아이디를 입력하세요:");
-		String userId = sc.nextLine();
-		System.out.println("추가할 직원의 비밀번호를 입력하세요:");
-		String password = sc.nextLine();
-
-		List<String> employees = getEmployees();
-		for (String employee : employees) {
-			if (employee.split(",")[0].equals(userId)) {
-				System.out.println("이미 존재하는 아이디입니다.");
-				return;
-			}
-		}
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true));
-		writer.write(userId + "," + password);
-		writer.newLine();
-		writer.close();
-		System.out.println("직원 추가 성공");
-	}
-
-	//0.1.2 직원 삭제 메서드	
-	
-	public static void deleteUser() throws IOException {
-		System.out.println(BAR);
-		System.out.println("삭제할 직원의 아이디를 입력하세요:");
-		String userId = sc.nextLine();
-
-		List<String> employees = getEmployees();
-		employees.removeIf(employee -> employee.split(",")[0].equals(userId));
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
-		for (String employee : employees) {
-			writer.write(employee);
-			writer.newLine();
-		}
-		writer.close();
-		System.out.println("직원 삭제 성공");
-	}
-
-	//#.0 직원 목록 메서드
+	//#.0 직원 목록 
 
 	public static List<String> getEmployees() throws IOException {
 		List<String> employees = new ArrayList<>();
@@ -659,3 +544,119 @@ public class RestaurantMain {
 
 
 }//end of Main class
+
+
+
+//0.0 관리자메뉴
+
+//public static void AdminMenu() {
+//	System.out.println(BAR);
+//	System.out.println("관리자 메뉴를 선택하세요:");
+//	System.out.println("1. 직원 관리");
+//	System.out.println("2. 메뉴 관리");
+//	System.out.println("3. 메인 메뉴");
+//	System.out.println(BAR);
+//
+//	String choice;
+//	while (true) {
+//		choice = sc.nextLine();
+//		if (choice.matches("[123]")) {  // 정규식을 사용하여 1, 2, 3 중 하나인지 확인합니다.
+//			break;
+//		} else {
+//			System.out.println("잘못된 입력입니다. 1, 2, 3 중 하나를 입력해주세요.");
+//		}
+//	}
+//
+//	switch (choice) {
+//	case "1":
+//		manageUsers();
+//		break;
+//	case "2":
+//		//ㅇㅇㅇㅇ();
+//		break;
+//	case "3":
+//		System.out.println(BAR);
+//		System.out.println("메인메뉴 실행.");
+//		introMenu();	
+//	}
+//}
+
+//0.1 유저관리 메서드
+
+//public static void manageUsers() {
+//	try {
+//		List<String> employees = getEmployees();  // 직원 목록을 가져옵니다.
+//		for (String employee : employees) {
+//			System.out.println(employee);  // 각 직원의 정보를 출력합니다.
+//		}
+//
+//		System.out.println(BAR);
+//		System.out.println("1. 직원 추가");
+//		System.out.println("2. 직원 삭제");
+//
+//		String choice;
+//		while (true) {
+//			choice = sc.nextLine();
+//			if (choice.matches("[12]")) {  // 정규식을 사용하여 1 또는 2인지 확인합니다.
+//				break;
+//			} else {
+//				System.out.println("잘못된 입력입니다. 1 또는 2를 입력해주세요.");
+//			}
+//		}
+//		switch (choice) {
+//		case "1":
+//			addUser();
+//			break;
+//		case "2":
+//			deleteUser();
+//			break;
+//		}
+//		AdminMenu();
+//	} catch (IOException e) {
+//		e.printStackTrace();
+//	}
+//}
+
+////0.1.1 직원 추가 메서드
+//
+//public static void addUser() throws IOException {
+//	System.out.println(BAR);
+//	System.out.println("추가할 직원의 아이디를 입력하세요:");
+//	String userId = sc.nextLine();
+//	System.out.println("추가할 직원의 비밀번호를 입력하세요:");
+//	String password = sc.nextLine();
+//
+//	List<String> employees = getEmployees();
+//	for (String employee : employees) {
+//		if (employee.split(",")[0].equals(userId)) {
+//			System.out.println("이미 존재하는 아이디입니다.");
+//			return;
+//		}
+//	}
+//
+//	BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true));
+//	writer.write(userId + "," + password);
+//	writer.newLine();
+//	writer.close();
+//	System.out.println("직원 추가 성공");
+//}
+//
+////0.1.2 직원 삭제 메서드	
+//
+//public static void deleteUser() throws IOException {
+//	System.out.println(BAR);
+//	System.out.println("삭제할 직원의 아이디를 입력하세요:");
+//	String userId = sc.nextLine();
+//
+//	List<String> employees = getEmployees();
+//	employees.removeIf(employee -> employee.split(",")[0].equals(userId));
+//
+//	BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
+//	for (String employee : employees) {
+//		writer.write(employee);
+//		writer.newLine();
+//	}
+//	writer.close();
+//	System.out.println("직원 삭제 성공");
+//}
+

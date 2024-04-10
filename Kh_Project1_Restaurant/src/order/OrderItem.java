@@ -11,17 +11,22 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    
     public void incrementQuantity() {
         this.quantity++;
     }
 
+    
     public Food getFood() {
         return food;
     }
 
+    
     public int getQuantity() {
         return quantity;
     }
+    
+
     public int getTotalPrice() {
         return food.getPrice() * quantity;
     }

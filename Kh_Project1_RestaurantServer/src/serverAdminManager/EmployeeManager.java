@@ -49,7 +49,6 @@ public class EmployeeManager {
         }
     }
 
-
     private synchronized void saveCredentials(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Map.Entry<String, String> entry : employeeCredentials.entrySet()) {

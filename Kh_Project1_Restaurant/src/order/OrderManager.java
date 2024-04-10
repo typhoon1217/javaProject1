@@ -25,6 +25,7 @@ public class OrderManager {
         orderList.add(new OrderItem(food, 1));
     }
 
+    
     public void removeOrderItem(String foodId, File tableFile) {
         addToOrderListWithQuantity(tableFile);
         int initialSize = orderList.size(); //주문목록의 크기 조회
@@ -50,11 +51,11 @@ public class OrderManager {
         }
     }
 
-    //********스캐너 보유 주시 파일에서 리스트로 세팅
+    
     //주문목록(orderList) 불러와서 정보 추가 (수량정보 추가) 음식(food)정보+수량정보
     public void addToOrderListWithQuantity(File tableFile) {
         orderList.clear();
-        try (Scanner scanner = new Scanner(tableFile)) {
+        try (Scanner scanner = new Scanner(tableFile)) {		//스캐너 충돌 우려
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(", ");
@@ -79,6 +80,7 @@ public class OrderManager {
         }
     }
 	
+    
     //총가격 가져오는 코드
     public int getTotalPrice() {
     	int total = 0;

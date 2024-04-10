@@ -19,7 +19,7 @@ public class RestaurantMain {
 	private static SettingManager settingManager = SettingManager.getInstance();
 	private static FoodList foodList = FoodList.getInstance();
 	private static OrderManager orderManager = new OrderManager();
-	private static Scanner sc = new Scanner(System.in); 
+	public static Scanner sc = new Scanner(System.in); 
 	private static StringBuffer tableNumber = new StringBuffer();
 	public static final String BAR = "=========================================";
  
