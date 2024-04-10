@@ -18,7 +18,7 @@ import food.Food;
 import food.FoodList;
 import order.OrderManager;
 
-public class RestaurantMain {
+public class Main { 
 	
 	private static SettingManager settingManager = SettingManager.getInstance();
 	private static FoodList foodList = FoodList.getInstance();

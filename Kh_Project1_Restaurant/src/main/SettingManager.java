@@ -31,7 +31,7 @@ public class SettingManager {	//싱글톤 연습
 
 	//출력:전체 테이블 업데이트후 출력
     public void listAllTable() {
-    	System.out.println(RestaurantMain.BAR);
+    	System.out.println(Main.BAR);
         resetTableArray();
         printAllTable(tableArray);
     }

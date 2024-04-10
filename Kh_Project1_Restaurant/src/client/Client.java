@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import main.RestaurantMain;
+import main.Main;
 
 public class Client {
 	private static final String SERVER_IP = "::1"; // 서버 IP 주소
@@ -32,7 +32,7 @@ public class Client {
 
 			// 아이디와 비밀번호 입력 요청 출력
 			System.out.println("로그인 하시오");
-			System.out.println(RestaurantMain.BAR);
+			System.out.println(Main.BAR);
 
 			// 로그인 시도
 			loginProcess(socket, reader);
@@ -53,12 +53,12 @@ public class Client {
 			// 사용자로부터 아이디 입력 받기
 			System.out.print("ID: ");
 			String id = reader.readLine();
-			System.out.println(RestaurantMain.BAR);
+			System.out.println(Main.BAR);
 
 			// 사용자로부터 비밀번호 입력 받기
 			System.out.print("PW: ");
 			String password = reader.readLine();
-			System.out.println(RestaurantMain.BAR);
+			System.out.println(Main.BAR);
 
 			// 아이디와 비밀번호를 서버로 전송
 			dos.writeUTF(id);
@@ -77,9 +77,9 @@ public class Client {
 				//RestaurantMain.AdminMenu();//관리자 메뉴
 			} else if (response.equals("STAFF")) {
 				System.out.println("직원으로 로그인하셨습니다.");
-				RestaurantMain.introMenu();
+				Main.introMenu();
 				//RestaurantMain.introMenu();			//메인메뉴
-				System.out.println(RestaurantMain.BAR);
+				System.out.println(Main.BAR);
 			} else {
 				System.out.println("로그인 정보가 올바르지 않습니다. 다시 시도해주세요.");
 				login(); 							// 실패한 경우 다시 로그인을 호출
@@ -99,7 +99,7 @@ public class Client {
 			String action;
 			while (true) {
 				System.out.print("직원 추가: 1, 직원 삭제: 2를 입력하세요: ");
-				action = RestaurantMain.sc.nextLine();
+				action = Main.sc.nextLine();
 				if (action.equals("1") || action.equals("2")) {
 					break;
 				} else {
@@ -111,7 +111,7 @@ public class Client {
 			String id;
 			while (true) {
 				System.out.print("아이디를 입력하세요 (알파벳과 숫자로만 구성, 최소 4글자): ");
-				id = RestaurantMain.sc.nextLine();
+				id = Main.sc.nextLine();
 				if (id.matches("[a-zA-Z0-9]+") && id.length() >= 4) {
 					break;
 				} else {
@@ -125,7 +125,7 @@ public class Client {
 				// 비밀번호 입력 받기 (알파벳과 숫자로만 구성, 최소 6글자)
 				while (true) {
 					System.out.print("비밀번호를 입력하세요 (알파벳과 숫자로만 구성, 최소 6글자): ");
-					password = RestaurantMain.sc.nextLine();
+					password = Main.sc.nextLine();
 					if (password.matches("[a-zA-Z0-9]+") && password.length() >= 6) {
 						break;
 					} else {
@@ -147,10 +147,10 @@ public class Client {
 			if (response.equals("SUCCESS")) {
 				if (action.equals("1")) {
 					System.out.println("직원 추가 성공");
-					RestaurantMain.introMenu();
+					Main.introMenu();
 				} else if (action.equals("2")) {
 					System.out.println("직원 삭제 성공");
-					RestaurantMain.introMenu();
+					Main.introMenu();
 				}
 			} else {
 				System.out.println("작업 실패");

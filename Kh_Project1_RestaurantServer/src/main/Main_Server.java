@@ -1,4 +1,4 @@
-package server;
+package main;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -14,7 +14,7 @@ import serverAdminManager.EmployeeManager;
 import serverAdminManager.LoginManager;
 
 // 서버 클래스
-public class Server {
+public class Main_Server {
 	private static final String SUCCESS_MESSAGE = "SUCCESS";
 	private static final String FAILURE_MESSAGE = "FAILURE";
 

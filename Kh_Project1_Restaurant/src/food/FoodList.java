@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
-import main.RestaurantMain;
+import main.Main;
 
 public class FoodList {        //싱글톤 사용 메뉴는 변화가 없는 고정값
     private static FoodList instance = null;
@@ -71,11 +71,11 @@ public class FoodList {        //싱글톤 사용 메뉴는 변화가 없는 고
 
 	
 	public void displayMenu() {
-	    System.out.println(RestaurantMain.BAR);
+	    System.out.println(Main.BAR);
 	    for (Food food : getFoods()) {  // 'foodList.getFoods()' 대신 'foodList.foods'를 사용
 	        System.out.println(food.getId()+"\t\t"+ food.getCategory() +"\n"+ food.getName()+ "\t\t" + food.getPrice()+ "\n"+ food.getComment()+"\n\n");
 	    }
-	    System.out.println(RestaurantMain.BAR);
+	    System.out.println(Main.BAR);
 	}
 	
 	
