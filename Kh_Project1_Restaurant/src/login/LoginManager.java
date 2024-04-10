@@ -42,22 +42,7 @@ public class LoginManager {
             } else if (user instanceof Staff && user.LogIn(id, password)) {
                 return "STAFF";
             }
-            // 로그인 실패시 로그인 시도 횟수 증가
-            increaseLoginAttempts(id);
         }
         return "FAIL"; 
-    }
-
-    // 로그인 시도 횟수 증가 메서드
-    private void increaseLoginAttempts(String id) {
-        int attempts = loginAttempts.getOrDefault(id, 0); // 해당 ID의 시도 횟수를 가져옴
-        attempts++; // 시도 횟수 증가
-        loginAttempts.put(id, attempts); // 업데이트된 시도 횟수를 맵에 저장
-
-        // 로그인 시도가 5회 이상인 경우 해당 ID의 연결 끊기
-        if (attempts >= 5) {
-            // 여기에 연결 끊는 로직을 추가
-            // 예를 들어, 연결을 끊기 위한 메서드를 호출하거나 다른 조치를 취할 수 있습니다.
-        }
     }
 }
