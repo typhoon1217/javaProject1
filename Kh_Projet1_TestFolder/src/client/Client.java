@@ -6,8 +6,6 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import main.RestaurantMain;
-
 public class Client {
     private static final String SERVER_IP = "::1"; // 서버 IP 주소
     private static final int SERVER_PORT = 1234; // 서버 포트 번호
@@ -24,7 +22,7 @@ public class Client {
             // 아이디와 비밀번호 입력 요청 출력
             System.out.println("아이디는 영문자로 시작하고, 영문자와 숫자의 조합으로 최소 3자 이상이어야 합니다.");
             System.out.println("비밀번호는 대소문자 알파벳, 숫자, 특수문자의 조합으로 최소 8자 이상이어야 합니다.");
-            System.out.println(RestaurantMain.BAR);
+            System.out.println(ClientUI.BAR);
 
             // 로그인 시도
             loginProcess(socket, reader);
@@ -63,10 +61,13 @@ public class Client {
             // 로그인 성공 여부 확인
             if (response.equals("ADMIN")) {
                 System.out.println("관리자로 로그인하셨습니다.");
-                RestaurantMain.AdminMenu();			//관리자 메뉴
+                ClientUI.AdminMenu();	
+                //RestaurantMain.AdminMenu();//관리자 메뉴
             } else if (response.equals("STAFF")) {
                 System.out.println("직원으로 로그인하셨습니다.");
-                RestaurantMain.introMenu();			//메인메뉴
+                ClientUI.introMenu();
+                //RestaurantMain.introMenu();			//메인메뉴
+            	System.out.println(ClientUI.BAR);
             } else {
                 System.out.println("로그인 정보가 올바르지 않습니다. 다시 시도해주세요.");
                 Login(); 							// 실패한 경우 다시 로그인을 호출

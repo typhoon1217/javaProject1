@@ -1,4 +1,4 @@
-package login;
+package server;
 
 //사용자 정보를 저장하는 추상 클래스
 public abstract class User {

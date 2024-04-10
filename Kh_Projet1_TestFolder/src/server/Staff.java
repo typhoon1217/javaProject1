@@ -1,4 +1,4 @@
-package login;
+package server;
 
 public class Staff extends User {
     public Staff(String id, String password) {

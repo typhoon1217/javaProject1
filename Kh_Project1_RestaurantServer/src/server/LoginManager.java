@@ -7,7 +7,7 @@ import java.io.IOException;
 // 로그인 관리자 클래스
 public class LoginManager {
     private Admin admin;
-    private Staff user;
+    private Staff staff;
 
     public LoginManager() {
         // 관리자 정보와 일반 사용자 정보를 텍스트 파일에서 불러옵니다.
@@ -16,23 +16,23 @@ public class LoginManager {
             String adminPassword = adminReader.readLine();
             admin = new Admin(adminId, adminPassword);
 
-            try (BufferedReader userReader = new BufferedReader(new FileReader("user.txt"))) {
-				String userId = userReader.readLine();
-				String userPassword = userReader.readLine();
-				user = new Staff(userId, userPassword);
+            try (BufferedReader staffReader = new BufferedReader(new FileReader("staff.txt"))) {
+				String staffId = staffReader.readLine();
+				String staffPassword = staffReader.readLine();
+				staff = new Staff(staffId, staffPassword);
 			}
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+ 
     public String login(String id, String password) {
         if (admin.LogIn(id, password)) {
-            return "관리자 로그인 성공";
-        } else if (user.LogIn(id, password)) {
-            return "사용자 로그인 성공";
+            return "ADMIN";
+        } else if (staff.LogIn(id, password)) {
+            return "STAFF";
         } else {
-            return "로그인 실패";
+            return "FAILL";
         }
     }
 
