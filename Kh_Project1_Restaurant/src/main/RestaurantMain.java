@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import Food.Food;
-import Food.FoodList;
+
+import client.Client;
+import food.Food;
+import food.FoodList;
 import order.OrderManager;
 
 public class RestaurantMain {
@@ -33,14 +35,17 @@ public class RestaurantMain {
 	//초기화면
 
 	public static void reset() {			
+		//
+		Client.Login();						//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
 		//기능 테스트용
 		//introMenu();	                    //초기메뉴
-		AdminMenu();						//관리자 메뉴
+		
+		//AdminMenu();						//관리자 메뉴
 		//menuLoadTable();                  //주문메뉴
 		
-	}
+	
 
 	//로그인 
 	
@@ -89,6 +94,8 @@ public class RestaurantMain {
 //			System.out.println(e+"에러가 발생했습니다. 로그인을 재시도합니다.");
 //		}
 //	}
+	}
+	
 	
 	//0.0 관리자메뉴
 

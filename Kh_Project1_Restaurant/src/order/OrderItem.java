@@ -1,6 +1,6 @@
 package order;
 
-import Food.Food;
+import food.Food;
 
 public class OrderItem {
     private Food food;

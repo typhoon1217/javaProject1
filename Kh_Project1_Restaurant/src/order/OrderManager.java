@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Food.Food;
+
+import food.Food;
 
 public class OrderManager {
 

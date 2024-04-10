@@ -1,4 +1,4 @@
-package Food;
+package food;
 
 import java.util.ArrayList;
 import java.util.Collections;

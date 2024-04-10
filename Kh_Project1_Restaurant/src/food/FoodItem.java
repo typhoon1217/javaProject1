@@ -1,4 +1,4 @@
-package Food;
+package food;
 
 public abstract class FoodItem {
 	String foodid; 
