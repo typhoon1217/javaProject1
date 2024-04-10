@@ -28,20 +28,25 @@ public class RestaurantMain {
 	private static StringBuffer tableNumber = new StringBuffer();
 	public static final String BAR = "=========================================";
  
-	//0메인 
+	//메인 
 	
 	public static void main(String[] args) {
 		reset();
 	}
 	
-	//0초기화면
+	//초기화면
 
-	public static void reset() {
-		login();
-		introMenu();
+	public static void reset() {			
+		//login();							//로그인 
+		//최초 선택창
+		//기능 테스트용
+		//introMenu();	                    //초기메뉴
+		AdminMenu();						//관리자 메뉴
+		//menuLoadTable();                  //주문메뉴
+		
 	}
 
-	//#.@ 로그인 메서드
+	//로그인 
 	
 	public static void login() {
 		try {
@@ -66,13 +71,12 @@ public class RestaurantMain {
 						System.out.println("관리자 로그인 성공");
 						AdminMenu();
 						loggedIn = true;
-						break;
 					} else {
 						LogInInterface employeeLogin = new Employee();
 						if (employeeLogin.logIn(user)) {
 							System.out.println("직원 로그인 성공");
+							introMenu();	
 							loggedIn = true;
-							break;
 						} else {
 							System.out.println("로그인 실패");
 							user.resetCredentials();  // 로그인 실패 시, 아이디와 비밀번호를 리셋합니다.
@@ -80,7 +84,6 @@ public class RestaurantMain {
 							if (count == SettingManager.MAX_ATTEMPTS) {
 								System.out.println("로그인 시도 횟수 초과. 프로그램을 종료합니다.");
 								loggedIn = false;
-								break;
 							}
 						}
 					}
@@ -91,7 +94,133 @@ public class RestaurantMain {
 		}
 	}
 	
-	//0인트로 메뉴
+	//0.0 관리자메뉴
+
+	public static void AdminMenu() {
+		System.out.println(BAR);
+		System.out.println("관리자 메뉴를 선택하세요:");
+		System.out.println("1. 직원 관리");
+		System.out.println("2. 메뉴 관리");
+		System.out.println("3. 메인 메뉴");
+		System.out.println(BAR);
+
+		String choice;
+		while (true) {
+			choice = sc.nextLine();
+			if (choice.matches("[123]")) {  // 정규식을 사용하여 1, 2, 3 중 하나인지 확인합니다.
+				break;
+			} else {
+				System.out.println("잘못된 입력입니다. 1, 2, 3 중 하나를 입력해주세요.");
+			}
+		}
+
+		switch (choice) {
+		case "1":
+			manageUsers();
+			break;
+		case "2":
+			//ㅇㅇㅇㅇ();
+			break;
+		case "3":
+			System.out.println(BAR);
+			System.out.println("메인메뉴 실행.");
+			introMenu();	
+		}
+	}
+
+	//0.1 유저관리 메서드
+
+	public static void manageUsers() {
+		try {
+			List<String> employees = getEmployees();  // 직원 목록을 가져옵니다.
+			for (String employee : employees) {
+				System.out.println(employee);  // 각 직원의 정보를 출력합니다.
+			}
+
+			System.out.println(BAR);
+			System.out.println("1. 직원 추가");
+			System.out.println("2. 직원 삭제");
+
+			String choice;
+			while (true) {
+				choice = sc.nextLine();
+				if (choice.matches("[12]")) {  // 정규식을 사용하여 1 또는 2인지 확인합니다.
+					break;
+				} else {
+					System.out.println("잘못된 입력입니다. 1 또는 2를 입력해주세요.");
+				}
+			}
+			switch (choice) {
+			case "1":
+				addUser();
+				break;
+			case "2":
+				deleteUser();
+				break;
+			}
+			AdminMenu();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//0.1.1 직원 추가 메서드
+
+	public static void addUser() throws IOException {
+		System.out.println(BAR);
+		System.out.println("추가할 직원의 아이디를 입력하세요:");
+		String userId = sc.nextLine();
+		System.out.println("추가할 직원의 비밀번호를 입력하세요:");
+		String password = sc.nextLine();
+
+		List<String> employees = getEmployees();
+		for (String employee : employees) {
+			if (employee.split(",")[0].equals(userId)) {
+				System.out.println("이미 존재하는 아이디입니다.");
+				return;
+			}
+		}
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true));
+		writer.write(userId + "," + password);
+		writer.newLine();
+		writer.close();
+		System.out.println("직원 추가 성공");
+	}
+
+	//0.1.2 직원 삭제 메서드	
+	
+	public static void deleteUser() throws IOException {
+		System.out.println(BAR);
+		System.out.println("삭제할 직원의 아이디를 입력하세요:");
+		String userId = sc.nextLine();
+
+		List<String> employees = getEmployees();
+		employees.removeIf(employee -> employee.split(",")[0].equals(userId));
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
+		for (String employee : employees) {
+			writer.write(employee);
+			writer.newLine();
+		}
+		writer.close();
+		System.out.println("직원 삭제 성공");
+	}
+
+	//#.0 직원 목록 메서드
+
+	public static List<String> getEmployees() throws IOException {
+		List<String> employees = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader("employees.txt"));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			employees.add(line);
+		}
+		reader.close();
+		return employees;
+	}
+	
+	//인트로 메뉴
 
 	public static void introMenu() {
 		settingManager.listAllTable();
@@ -222,132 +351,6 @@ public class RestaurantMain {
 		}
 	}
 
-	//@.0 관리자메뉴
-
-	public static void AdminMenu() {
-		System.out.println(BAR);
-		System.out.println("관리자 메뉴를 선택하세요:");
-		System.out.println("1. 직원 관리");
-		System.out.println("2. 메뉴 관리");
-		System.out.println("3. 메인 메뉴");
-		System.out.println(BAR);
-
-		String choice;
-		while (true) {
-			choice = sc.nextLine();
-			if (choice.matches("[123]")) {  // 정규식을 사용하여 1, 2, 3 중 하나인지 확인합니다.
-				break;
-			} else {
-				System.out.println("잘못된 입력입니다. 1, 2, 3 중 하나를 입력해주세요.");
-			}
-		}
-
-		switch (choice) {
-		case "1":
-			manageUsers();
-			break;
-		case "2":
-			//ㅇㅇㅇㅇ();
-			break;
-		case "3":
-			System.out.println(BAR);
-			System.out.println("메인메뉴 실행.");
-			return;  // 로그아웃 선택 시 메소드를 종료.
-		}
-	}
-
-	//@.1 유저관리 메서드
-
-	public static void manageUsers() {
-		try {
-			List<String> employees = getEmployees();  // 직원 목록을 가져옵니다.
-			for (String employee : employees) {
-				System.out.println(employee);  // 각 직원의 정보를 출력합니다.
-			}
-
-			System.out.println(BAR);
-			System.out.println("1. 직원 추가");
-			System.out.println("2. 직원 삭제");
-
-			String choice;
-			while (true) {
-				choice = sc.nextLine();
-				if (choice.matches("[12]")) {  // 정규식을 사용하여 1 또는 2인지 확인합니다.
-					break;
-				} else {
-					System.out.println("잘못된 입력입니다. 1 또는 2를 입력해주세요.");
-				}
-			}
-			switch (choice) {
-			case "1":
-				addUser();
-				break;
-			case "2":
-				deleteUser();
-				break;
-			}
-			AdminMenu();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	//@.1.1 직원 추가 메서드
-
-	public static void addUser() throws IOException {
-		System.out.println(BAR);
-		System.out.println("추가할 직원의 아이디를 입력하세요:");
-		String userId = sc.nextLine();
-		System.out.println("추가할 직원의 비밀번호를 입력하세요:");
-		String password = sc.nextLine();
-
-		List<String> employees = getEmployees();
-		for (String employee : employees) {
-			if (employee.split(",")[0].equals(userId)) {
-				System.out.println("이미 존재하는 아이디입니다.");
-				return;
-			}
-		}
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true));
-		writer.write(userId + "," + password);
-		writer.newLine();
-		writer.close();
-		System.out.println("직원 추가 성공");
-	}
-
-	//@.1.2 직원 삭제 메서드	
-	
-	public static void deleteUser() throws IOException {
-		System.out.println(BAR);
-		System.out.println("삭제할 직원의 아이디를 입력하세요:");
-		String userId = sc.nextLine();
-
-		List<String> employees = getEmployees();
-		employees.removeIf(employee -> employee.split(",")[0].equals(userId));
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
-		for (String employee : employees) {
-			writer.write(employee);
-			writer.newLine();
-		}
-		writer.close();
-		System.out.println("직원 삭제 성공");
-	}
-
-	//#.@ 직원 목록 메서드
-
-	public static List<String> getEmployees() throws IOException {
-		List<String> employees = new ArrayList<>();
-		BufferedReader reader = new BufferedReader(new FileReader("employees.txt"));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			employees.add(line);
-		}
-		reader.close();
-		return employees;
-	}
-	
 	//2 주문 메뉴
 
 	public static void menuLoadTable() {
@@ -471,8 +474,6 @@ public class RestaurantMain {
 		settingManager.listAllTable();
 		inputTableNum();
 		delFileInTableNum();
-		System.out.println("테이블 번호: " + tableNumber + "이(가) 성공적으로 삭제되었습니다.");
-
 	} // end of deleteATable
 
 	//4.2전체 테이블 삭제
@@ -528,7 +529,6 @@ public class RestaurantMain {
 			System.out.println("입력하신 테이블이 존재하지 않습니다.");
 		}
 	}
-
 
 	//#.2 입력:선택한 테이블 주문 목록에 존재하는 음식
 
@@ -625,12 +625,14 @@ public class RestaurantMain {
 	} 
 	
 	//#.사용할 파일 지정(에 스트링 파일명 넣어주면됨.)
+	
 	public static File setFileTxt(String tableNum2) {
 	    File table = new File(SettingManager.TABLE_DIR, tableNum2 + ".txt");
 	    return table;
 	}
 	
 	//#.입력: 전역변수 테이블 번호 수정하는 메서드(전역변수 테이블 리셋)
+	
 	public static void inputTableNum() {
 		String table=inputFileName();
 		tableNumber.setLength(0);							// 기존 내용을 지웁니다
@@ -638,10 +640,9 @@ public class RestaurantMain {
 	}
 	
 	//#.테이블 디렉토리가 비여있을 경우 메인선택창으로 돌아가기 
-	public static final String TABLE_DIR = "./table"; 
-
+	
 	public static void toMainIfDirIsEmpty() {
-	    File dir = new File(TABLE_DIR);
+	    File dir = new File(SettingManager.TABLE_DIR);
 	    File[] files = dir.listFiles();
 	    if (files != null && files.length > 0) {
 	        // 디렉토리가 비어 있지 않습니다. 다음 단계로 넘어감

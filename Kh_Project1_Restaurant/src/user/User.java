@@ -1,6 +1,5 @@
 package user;
 
-//싱글톤 쓰다가 아이디 비번 리셋안되서 망함 스트링 버퍼로 수정
 public class User {
     private String userId;
     private String password;
