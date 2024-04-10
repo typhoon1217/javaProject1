@@ -1,9 +1,9 @@
-package user;
+package localLogin;
 
-import main.RestaurantMain;
+import main.Main;
 
 public class Admin implements LogInInterface {
-	static final String BAR = RestaurantMain.BAR;
+	static final String BAR = Main.BAR;
 	private static final String ADMIN_ID = "admin";
 	private static final String ADMIN_PASSWORD = "admin1234";
 

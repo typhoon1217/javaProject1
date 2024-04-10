@@ -1,4 +1,4 @@
-package user;
+package localLogin;
 
 public class User {
     private String userId;
