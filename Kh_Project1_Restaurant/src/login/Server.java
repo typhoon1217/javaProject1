@@ -8,9 +8,7 @@ import java.net.Socket;
 // 서버 코드
 public class Server {  
     public static void main(String[] args) {
-        try {
-            // 서버 소켓 생성
-            ServerSocket ss = new ServerSocket(1234);
+        try (ServerSocket ss = new ServerSocket(1234)) {// 서버 소켓 생성
             System.out.println("서버가 클라이언트를 기다리는 중...");
 
             while (true) {
@@ -33,7 +31,7 @@ public class Server {
                         LoginManager loginManager = LoginManager.getInstance();
 
                         // 로그인 매니저 로그인 결과 호출
-                        String loginResult = loginManager.login(id, password);
+                        String loginResult = loginManager.Login(id, password);
 
                         // 데이터 출력 스트림 생성
                         DataOutputStream dos = new DataOutputStream(s.getOutputStream());

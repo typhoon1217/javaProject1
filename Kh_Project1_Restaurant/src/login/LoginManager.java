@@ -1,33 +1,40 @@
 package login;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginManager {
-    private static LoginManager instance = null;
-    //로그인 정보는 아이디(키값)을 입력받아 비밀번호를 매치하기 좋은 구조라고 생각됨. 해쉬맵 사용.
-    private HashMap<String, String> users;
-	
-    //싱글톤 패턴 사용    
+    private static LoginManager instance;
+    private Map<String, User> userMap;
+
+    // 싱글톤 패턴
     private LoginManager() {
-        users = new HashMap<>();
-        // 초기 사용자 추가
-        users.put("admin", "admin");
-        users.put("1", "1");
-        users.put("3", "2");
+        // 해시맵 초기화
+        userMap = new HashMap<>();
+        // 사용자 정보 추가
+        userMap.put("admin", new Admin("admin", "admin123"));
+        userMap.put("staff", new Staff("staff", "staff123"));
     }
-    public static LoginManager getInstance() {
+
+    //  getInstance 정적 메서드
+    public static synchronized LoginManager getInstance() {
         if (instance == null) {
             instance = new LoginManager();
         }
         return instance;
     }
-    
-    // 로그인 시도 
-    public String login(String id, String password) {
-        String correctPassword = users.get(id);
-        if (correctPassword != null && correctPassword.equals(password)) {
-            return "로그인 성공";
+
+    // 로그인 시도 메서드
+    public String Login(String id, String password) {
+        // 사용자가 존재하는지 확인 후 로그인 시도
+        User user = userMap.get(id);										//ID Key 호출
+        if (user instanceof Admin && user.LogIn(id, password)) {			//ID&PW 로 Admin의 로그인 메서드 실행
+            return "ADMIN 로그인 성공";										
+        } else if (user instanceof Staff && user.LogIn(id, password)) {		//ID&PW 로 Staff의 로그인 메서드 실행
+            return "STAFF 로그인 성공";
+        } else {
+            return "로그인 실패";												//로그인 실패
         }
-        return "로그인 실패";
     }
-}
+
+}//end of class
