@@ -20,8 +20,7 @@ public class Client {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             // 아이디와 비밀번호 입력 요청 출력
-            System.out.println("아이디는 영문자로 시작하고, 영문자와 숫자의 조합으로 최소 3자 이상이어야 합니다.");
-            System.out.println("비밀번호는 대소문자 알파벳, 숫자, 특수문자의 조합으로 최소 8자 이상이어야 합니다.");
+            System.out.println("로그인 하시오");
             System.out.println(ClientUI.BAR);
 
             // 로그인 시도
