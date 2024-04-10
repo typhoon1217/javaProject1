@@ -29,15 +29,26 @@ public class EmployeeManager {
         }
     }
 
-    public synchronized void addEmployee(String id, String password) {
-        employeeCredentials.put(id, password);
-        saveCredentials("staff.txt");
+    public synchronized boolean addEmployee(String id, String password) {
+        if (!employeeCredentials.containsKey(id)) {
+            employeeCredentials.put(id, password);
+            saveCredentials("staff.txt");
+            return true; // 성공
+        } else {
+            return false; // 실패: 이미 존재하는 ID
+    }
     }
 
-    public synchronized void deleteEmployee(String id) {
-        employeeCredentials.remove(id);
-        saveCredentials("staff.txt");
+    public synchronized boolean deleteEmployee(String id) {
+        if (employeeCredentials.containsKey(id)) {
+            employeeCredentials.remove(id);
+            saveCredentials("staff.txt");
+            return true; // 성공
+        } else {
+            return false; // 실패: 해당 ID가 존재하지 않음
+        }
     }
+
 
     private synchronized void saveCredentials(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
