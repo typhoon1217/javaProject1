@@ -14,10 +14,6 @@ import java.util.regex.Pattern;
 import Food.Food;
 import Food.FoodList;
 import order.OrderManager;
-import user.Admin;
-import user.Employee;
-import user.LogInInterface;
-import user.User;
 
 public class RestaurantMain {
 	
@@ -48,51 +44,51 @@ public class RestaurantMain {
 
 	//로그인 
 	
-	public static void login() {
-		try {
-			boolean loggedIn = false;
-			while (!loggedIn) {
-				int count = 0;
-				while (count < SettingManager.MAX_ATTEMPTS) {
-					System.out.println(BAR);
-					System.out.println("아이디를 입력하세요:");
-					System.out.println(BAR);
-					String id = sc.nextLine();
-					System.out.println(BAR);
-					System.out.println("비밀번호를 입력하세요:");
-					System.out.println(BAR);
-					String password = sc.nextLine();
-					System.out.println(BAR);
-
-					User user = new User(id, password);
-					LogInInterface adminLogin = new Admin();
-
-					if (adminLogin.logIn(user)) {
-						System.out.println("관리자 로그인 성공");
-						AdminMenu();
-						loggedIn = true;
-					} else {
-						LogInInterface employeeLogin = new Employee();
-						if (employeeLogin.logIn(user)) {
-							System.out.println("직원 로그인 성공");
-							introMenu();	
-							loggedIn = true;
-						} else {
-							System.out.println("로그인 실패");
-							user.resetCredentials();  // 로그인 실패 시, 아이디와 비밀번호를 리셋합니다.
-							count++;
-							if (count == SettingManager.MAX_ATTEMPTS) {
-								System.out.println("로그인 시도 횟수 초과. 프로그램을 종료합니다.");
-								loggedIn = false;
-							}
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			System.out.println(e+"에러가 발생했습니다. 로그인을 재시도합니다.");
-		}
-	}
+//	public static void login() {
+//		try {
+//			boolean loggedIn = false;
+//			while (!loggedIn) {
+//				int count = 0;
+//				while (count < SettingManager.MAX_ATTEMPTS) {
+//					System.out.println(BAR);
+//					System.out.println("아이디를 입력하세요:");
+//					System.out.println(BAR);
+//					String id = sc.nextLine();
+//					System.out.println(BAR);
+//					System.out.println("비밀번호를 입력하세요:");
+//					System.out.println(BAR);
+//					String password = sc.nextLine();
+//					System.out.println(BAR);
+//
+//					User user = new User(id, password);
+//					LogInInterface adminLogin = new Admin();
+//
+//					if (adminLogin.logIn(user)) {
+//						System.out.println("관리자 로그인 성공");
+//						AdminMenu();
+//						loggedIn = true;
+//					} else {
+//						LogInInterface employeeLogin = new Employee();
+//						if (employeeLogin.logIn(user)) {
+//							System.out.println("직원 로그인 성공");
+//							introMenu();	
+//							loggedIn = true;
+//						} else {
+//							System.out.println("로그인 실패");
+//							user.resetCredentials();  // 로그인 실패 시, 아이디와 비밀번호를 리셋합니다.
+//							count++;
+//							if (count == SettingManager.MAX_ATTEMPTS) {
+//								System.out.println("로그인 시도 횟수 초과. 프로그램을 종료합니다.");
+//								loggedIn = false;
+//							}
+//						}
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			System.out.println(e+"에러가 발생했습니다. 로그인을 재시도합니다.");
+//		}
+//	}
 	
 	//0.0 관리자메뉴
 
