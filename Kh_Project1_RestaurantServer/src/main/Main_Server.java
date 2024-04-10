@@ -149,4 +149,19 @@ public class Main_Server {
 			e.printStackTrace();
 		}
 	}
+
+	public static void serverStart() {
+		// LoginSever 메소드를 실행하는 스레드 생성 및 시작
+		Thread loginServerThread = new Thread(() -> {
+			loginSever();
+		});
+		loginServerThread.start();
+	
+		// AdminSever 메소드를 실행하는 스레드 생성 및 시작
+		Thread adminServerThread = new Thread(() -> {
+			adminSever();
+		});
+		adminServerThread.start();
+	}
+	
 }

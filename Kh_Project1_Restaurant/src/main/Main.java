@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
 import client.Client;
 import food.Food;
 import order.Order;
@@ -21,21 +22,22 @@ public class Main {
 
 	public static void main(String[] args) {
 		reset();
+	
 	}
 
 	//초기화면
 
 	public static void reset() {			
 		//
-		//Client.loginClient();				//클라이언트 로그인
+		Client.loginClient();		//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
 
 		//기능 테스트용
-		//Client.adminClient(); 				//관리자 클라이언트
-		introMenu();	                    //초기메뉴
+		//Client.adminClient(); 			//관리자 클라이언트
+		//introMenu();	                    //초기메뉴
 		//menuLoadTable();                  //주문메뉴
-
+		//Main_Server.serverStart(); 		//테스트 서버 시작		
 	}
 
 	//인트로 메뉴
