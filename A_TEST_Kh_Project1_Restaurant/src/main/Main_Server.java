@@ -19,6 +19,10 @@ public class Main_Server {
 	private static final String FAILURE_MESSAGE = "FAILURE";
 
 	public static void main(String[] args) {
+		serverStart();
+	}
+	
+	public static void serverStart() {
 		// LoginSever 메소드를 실행하는 스레드 생성 및 시작
 		Thread loginServerThread = new Thread(() -> {
 			loginSever();
@@ -31,19 +35,19 @@ public class Main_Server {
 		});
 		adminServerThread.start();
 	}
+	
 
 	// LoginSever 메소드
 	public static void loginSever() {
 		try (ServerSocket ss = new ServerSocket(7913)) { // 서버 소켓 생성
-			
 			System.out.println("Login Server: 서버가 클라이언트를 기다리는 중...");
 
 			// 각 클라이언트별 로그인 시도 횟수를 관리하는 맵
-			Map<Socket, Integer> loginAttempts = new HashMap<>(); //외부저장 하면 좋을듯
+			Map<Socket, Integer> loginAttempts = new HashMap<>();
 
 			while (true) {
 				Socket s = ss.accept(); // 클라이언트의 접속 대기
-				System.out.println(" 접속중......................");
+				System.out.println("Login Server: 클라이언트가 연결되었습니다!");
 
 				// 각 클라이언트 요청을 별도의 스레드로 처리
 				new Thread(() -> {
@@ -74,11 +78,14 @@ public class Main_Server {
 								loginAttempts.put(s, loginFailures);
 								dos.writeUTF(loginResult); // 클라이언트에게 로그인 결과 전송
 								System.out.println("Login Server: 로그인 결과 (" + loginResult + ")를 클라이언트에게 전송했습니다.");
-								}
-								// 로그인 실패 횟수가 5회를 초과한 경우
-								System.out.println("Login Server: 로그인 시도 횟수가 초과되었습니다. 클라이언트 접속을 종료합니다.");
-								dos.writeUTF("5EXIT"); 	
+							}
 						}//end of while2
+
+						// 로그인 실패 횟수가 5회를 초과한 경우
+						if (loginFailures >= 5) {
+							System.out.println("Login Server: 로그인 시도 횟수가 초과되었습니다. 클라이언트 접속을 종료합니다.");
+						}
+
 						s.close(); // 클라이언트 소켓 닫기
 					} catch (Exception e) { // try1 end
 						System.out.println("Login Server: " + e);
@@ -147,19 +154,4 @@ public class Main_Server {
 			e.printStackTrace();
 		}
 	}
-
-	public static void serverStart() {
-		// LoginSever 메소드를 실행하는 스레드 생성 및 시작
-		Thread loginServerThread = new Thread(() -> {
-			loginSever();
-		});
-		loginServerThread.start();
-	
-		// AdminSever 메소드를 실행하는 스레드 생성 및 시작
-		Thread adminServerThread = new Thread(() -> {
-			adminSever();
-		});
-		adminServerThread.start();
-	}
-	
 }
