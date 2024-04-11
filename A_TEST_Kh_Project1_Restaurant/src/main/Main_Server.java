@@ -103,55 +103,57 @@ public class Main_Server {
 		}
 	}
 
-	// AdminSever 메소드
 	public static void adminSever() {
-		try (ServerSocket ss = new ServerSocket(1217)) {
-			System.out.println("Admin Server: 서버가 클라이언트를 기다리는 중...");
+	    try (ServerSocket ss = new ServerSocket(1217)) {
+	        System.out.println("Admin Server: 서버가 클라이언트를 기다리는 중...");
 
-			EmployeeManager employeeManager = new EmployeeManager();
-			LoginManager loginManager = new LoginManager();
+	        EmployeeManager employeeManager = new EmployeeManager();
+	        LoginManager loginManager = new LoginManager();
 
-			while (true) {
-				Socket socket = ss.accept();
-				System.out.println("Admin Server: 클라이언트가 연결되었습니다!");
+	        while (true) {
+	            Socket socket = ss.accept();
+	            System.out.println("Admin Server: 클라이언트가 연결되었습니다!");
 
-				new Thread(() -> {
-					try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-							PrintWriter pw = new PrintWriter(socket.getOutputStream(), true)) {
+	            new Thread(() -> {
+	                try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	                     PrintWriter pw = new PrintWriter(socket.getOutputStream(), true)) {
 
-						// 클라이언트로부터 요청 받기
-						String action = br.readLine();
-						String id = br.readLine();
-						String password = br.readLine();
+	                    // 클라이언트로부터 요청 받기
+	                    String action = br.readLine();
+	                    String id = br.readLine();
+	                    String password = br.readLine();
 
-						System.out.println("Admin Server: Action: " + action + ", ID: " + id + ", Password: " + password);
+	                    System.out.println("Admin Server: Action: " + action + ", ID: " + id + ", Password: " + password);
 
-						String result = "";
-						// 요청에 따라 처리
-						if (action.equals("1")) {
-							// 직원 추가 요청 처리
-							boolean success = employeeManager.addEmployee(id, password);
-							result = (success) ? SUCCESS_MESSAGE : FAILURE_MESSAGE;
-						} else if (action.equals("2")) {
-							// 직원 삭제 요청 처리
-							boolean success = employeeManager.deleteEmployee(id);
-							result = (success) ? SUCCESS_MESSAGE : FAILURE_MESSAGE;
-						} else {
-							// 기타 요청은 로그인 관리자에게 전달
-							result = loginManager.login(id, password);
-						}
+	                    String result = "";
+	                    // 요청에 따라 처리
+	                    if (action.equals("1")) {
+	                        // 직원 추가 요청 처리
+	                        boolean success = employeeManager.addEmployee(id, password);
+	                        result = (success) ? SUCCESS_MESSAGE : FAILURE_MESSAGE;
+	                        System.out.println("Admin Server: 직원 추가 결과: " + result);
+	                    } else if (action.equals("2")) {
+	                        // 직원 삭제 요청 처리
+	                        boolean success = employeeManager.deleteEmployee(id);
+	                        result = (success) ? SUCCESS_MESSAGE : FAILURE_MESSAGE;
+	                        System.out.println("Admin Server: 직원 삭제 결과: " + result);
+	                    } else {
+	                        // 기타 요청은 로그인 관리자에게 전달
+	                        result = loginManager.login(id, password);
+	                        System.out.println("Admin Server: 로그인 결과: " + result);
+	                    }
 
-						// 클라이언트에 결과 전송
-						pw.println(result);
+	                    // 클라이언트에 결과 전송
+	                    pw.println(result);
 
-						System.out.println("Admin Server: Result: " + result);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}).start(); // 새로운 스레드에서 클라이언트 요청 처리
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	                    System.out.println("Admin Server: 클라이언트에 결과 전송: " + result);
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }).start(); // 새로운 스레드에서 클라이언트 요청 처리
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 }

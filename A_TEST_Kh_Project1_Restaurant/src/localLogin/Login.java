@@ -46,6 +46,7 @@ public class Login {
 			System.out.println(Main.BAR);
 			System.out.println("메인메뉴 실행.");
 			Main.introMenu();	
+			break;
 		}
 	}
 	public static void login() {

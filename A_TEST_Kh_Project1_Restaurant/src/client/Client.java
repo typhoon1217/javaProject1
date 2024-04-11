@@ -15,10 +15,10 @@ public class Client {
 	
 	
 	//기능 테스트용
-//	public static void main(String[] args) {
-//		login();
+	public static void main(String[] args) {
+		loginClient();
 //		adminClient();
-//	}
+	}
 	
 	// 로그인 클라이언트
 	public static void loginClient() { 
@@ -77,10 +77,7 @@ public class Client {
 			} else if (response.equals("STAFF")) {
 				System.out.println("직원으로 로그인하셨습니다.");
 				Main.introMenu();
-				System.out.println(Main.BAR);
-			} else if (response.equals("5EXIT")) {
-				System.out.println("로그인 실패 횟수가 5회를 초과 했습니다. 내일 다시 시도해주세요요");
-				Main.introMenu();
+				//RestaurantMain.introMenu();			//메인메뉴
 				System.out.println(Main.BAR);
 			} else {
 				System.out.println("로그인 정보가 올바르지 않습니다. 다시 시도해주세요.");
@@ -94,8 +91,7 @@ public class Client {
 	//관리자 클라이언트
 	public static void adminClient() {
 		// 액션 입력 받기 (1, 2, 또는 3만 허용)
-		System.out.println("직원 추가: 1, 직원 삭제: 2, 새 액션: 3, 메인 메뉴");
-		System.out.println(Main.BAR);
+		System.out.print("직원 추가: 1, 직원 삭제: 2, 새 액션: 3, 메인 메뉴");
 		String action = Main.sc.nextLine();
 		System.out.println(Main.BAR);
 		switch (action) {
@@ -115,48 +111,28 @@ public class Client {
 		}
 	}
 	
-	//관리자 과정처리+서버통신
 	public static void adminProcess(String action) {
-		try (Socket socket = new Socket(Setting.SERVER_IP, Setting.LOG_IN_PORT)) {
+	    try {
+	        Socket socket = new Socket(Setting.SERVER_IP, 1217);
 	        PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 	        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-	        // 아이디 입력 받기 (알파벳과 숫자로만 구성, 최소 4글자)
-	        String id;
-	        while (true) {
-	            System.out.print("아이디를 입력하세요 (알파벳과 숫자로만 구성, 최소 4글자): ");
-	            id = Main.sc.nextLine();
-	            if (id.matches("[a-zA-Z0-9]+") && id.length() >= 4) {
-	                break;
-	            } else {
-	                System.out.println("아이디는 알파벳과 숫자로만 구성되어야 하며, 최소 4글자여야 합니다.");
-	            }
-	            System.out.println(Main.BAR);
-	        }
+	        // 아이디 입력 받기
+	        String id = enterId();
 
 	        // 직원 삭제인 경우 비밀번호를 묻지 않음
 	        String password = "";
 	        if (!action.equals("2")) {
-	            // 비밀번호 입력 받기 (알파벳과 숫자로만 구성, 최소 6글자)
-	            while (true) {
-	                System.out.print("비밀번호를 입력하세요 (알파벳과 숫자로만 구성, 최소 6글자): ");
-	                password = Main.sc.nextLine();
-	                if (password.matches("[a-zA-Z0-9]+") && password.length() >= 6) {
-	                    break;
-	                } else {
-	                    System.out.println("비밀번호는 알파벳과 숫자로만 구성되어야 하며, 최소 6글자여야 합니다.");
-	                }
-	            }
-	            System.out.println(Main.BAR);
+	            // 비밀번호 입력 받기
+	            password = enterPassword();
 	        }
 
 	        // 서버로 요청 보내기
-	        pw.println(action);
-	        pw.println(id);
-	        pw.println(password);
+	        sendRequestToServer(pw, action, id, password);
 
 	        // 서버로부터 응답 받기
 	        String response = br.readLine();
+	        System.out.println(response);
 	        System.out.println("서버로부터의 응답: " + response);
 
 	        // 응답에 따라 적절한 메소드 호출
@@ -172,14 +148,50 @@ public class Client {
 	            System.out.println("작업 실패");
 	            adminClient();
 	        }
+
+	        // 소켓 닫기
+	        socket.close();
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
 	}
 
-	//서버통신(미구현)
-//	public static void client() {
-//		
-//	}
-	
+	// 아이디 입력 메소드
+	public static String enterId() {
+	    String id;
+	    while (true) {
+	        System.out.print("아이디를 입력하세요 (알파벳과 숫자로만 구성, 최소 4글자): ");
+	        id = Main.sc.nextLine();
+	        if (id.matches("[a-zA-Z0-9]+") && id.length() >= 4) {
+	            break;
+	        } else {
+	            System.out.println("아이디는 알파벳과 숫자로만 구성되어야 하며, 최소 4글자여야 합니다.");
+	        }
+	        System.out.println(Main.BAR);
+	    }
+	    return id;
+	}
+
+	// 비밀번호 입력 메소드
+	public static String enterPassword() {
+	    String password;
+	    while (true) {
+	        System.out.print("비밀번호를 입력하세요 (알파벳과 숫자로만 구성, 최소 6글자): ");
+	        password = Main.sc.nextLine();
+	        if (password.matches("[a-zA-Z0-9]+") && password.length() >= 6) {
+	            break;
+	        } else {
+	            System.out.println("비밀번호는 알파벳과 숫자로만 구성되어야 하며, 최소 6글자여야 합니다.");
+	        }
+	    }
+	    System.out.println(Main.BAR);
+	    return password;
+	}
+
+	// 서버로 요청을 보내는 메소드
+	public static void sendRequestToServer(PrintWriter pw, String action, String id, String password) {
+	    pw.println(action);
+	    pw.println(id);
+	    pw.println(password);
+	}
 }
