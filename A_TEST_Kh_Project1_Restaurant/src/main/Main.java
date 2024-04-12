@@ -23,33 +23,29 @@ public class Main {
 
 	public static void main(String[] args) {
 		reset();
-	
 	}
 
 	//초기화면
 
 	public static void reset() {			
-		//
 		//Client.loginClient();				//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
 
 		//기능 테스트용
-		Order.foodList.displayMenu();
+		//Order.foodList.displayMenu();
 		//Client.adminClient(); 			//관리자 클라이언트
-		//introMenu();	                    //초기메뉴
+		introMenu(false);	                    //초기메뉴
 		//menuLoadTable();                  //주문메뉴
 		//Main_Server.serverStart(); 					//테스트 서버 시작		
 	}
 
 	//인트로 메뉴
 
-	public static void introMenu() {
-		settingManager.listAllTable();
+	public static boolean introMenu( boolean flag) {
 		String greeting = "안녕하세요 " + Setting.R_NAME + "에 방문해주셔서 감사합니다.";
-		String regexMenu = "([0-4])"; // 입력값 범위
-															boolean flag = false;
 		while (!flag) {
+			settingManager.listAllTable();
 			System.out.println(BAR);
 			System.out.println(greeting);
 			System.out.println(BAR);
@@ -59,6 +55,7 @@ public class Main {
 			System.out.println(BAR);
 			System.out.println("원하는 메뉴 번호를 입력하세요:");
 			System.out.println(BAR);
+			String regexMenu = "([0-4])"; // 입력값 범위
 			String choice = sc.nextLine();
 			System.out.println(BAR);
 			if (Pattern.matches(regexMenu, choice)) {
@@ -69,15 +66,14 @@ public class Main {
 					break;
 				case 1:
 					System.out.println("테이블 배정을 선택하셨습니다.");
-					menuSetTable();
+					addATable();
 					break;
 				case 2:
 					System.out.println("주문 받기를 선택하셨습니다.");
-					menuLoadTable();
+					menuLoadTable(flag);
 					break;
 				case 3:
 					System.out.println("프로그램을 종료합니다.");
-					flag = true;
 					break;
 				case 4:
 					System.out.println("테이블 삭제를 선택하셨습니다.");
@@ -86,8 +82,11 @@ public class Main {
 				}// end of switch
 			} else {
 				System.out.println("0~4 까지 범위의 숫자를 입력해 주세요");
-			}
-		}sc.close();   // end of while
+			}flag=false;
+		}   // end of while
+		sc.close();
+		System.out.println("프로그램이 종료되었습니다.");
+		return flag;
 	}// end of introMenu
 
 	//1.0메인메뉴: 테이블 변경
@@ -101,10 +100,7 @@ public class Main {
 			System.out.println("테이블이 없습니다.");
 			return;
 		}
-
 		settingManager.listAllTable();
-		boolean flag = false;
-		while (!flag) {
 			System.out.println(BAR);
 			System.out.println("이동을 요청한 테이블의 번호를 입력하세요.");
 			String currentTable = inputFileName();
@@ -118,7 +114,6 @@ public class Main {
 					boolean renamed = currentF.renameTo(newF);
 					if (renamed) {
 						System.out.println(currentTable + " 테이블이 " + newTable + "로 성공적으로 변경되었습니다.");
-						flag = true;
 					} else {
 						System.out.println("테이블 이름 변경에 실패했습니다.");
 					}
@@ -129,12 +124,10 @@ public class Main {
 				System.out.println("입력하신 테이블이 존재하지 않습니다.");
 			}
 		}
-		settingManager.listAllTable();
-	} // end of menuChangeTable
 
 	//1.1메인메뉴: 테이블 배정
 
-	public static void menuSetTable() {
+	public static void addATable() {
 		settingManager.listAllTable();
 		boolean flag = false;
 		while (!flag) {
@@ -148,7 +141,6 @@ public class Main {
 					if (file.createNewFile()) {
 						System.out.println("테이블 번호: " + setTable + "이(가) 성공적으로 배정되었습니다.");
 						settingManager.listAllTable();
-						flag = true;
 					} else {
 						System.out.println("테이블 배정에 실패했습니다.");
 					}
@@ -163,7 +155,7 @@ public class Main {
 
 	private static void menuDeleteTable() {
 		System.out.println(BAR);
-		toMainIfDirIsEmpty();
+		toAddTifEmpty();
 		System.out.println("1: 테이블 삭제\n2: 전체 테이블 삭제");
 		boolean response = Input1or2();
 		if (response) {
@@ -175,22 +167,20 @@ public class Main {
 
 	//2 주문 메뉴
 
-	public static void menuLoadTable() {
+	public static void menuLoadTable(boolean flag) {
 		Scanner sc2 = new Scanner(System.in); 
-		
-		toMainIfDirIsEmpty();
+		toAddTifEmpty();
 		settingManager.listAllTable();
 		System.out.println(BAR);
 		System.out.println("주문받을 테이블 번호를 입력해주세요");
 		inputTableNum();
 		System.out.print("안녕하세요 ");
 
-		String regex = "([0-5])";							
-		boolean flag = false;
+		String regex = "([0-5])";	
 		while (!flag) {										//display order list 추가하까? 하면 3번 삭제 ㄱ
 			System.out.println(tableNumber + " 테이블 고객님, 무엇을 도와드릴까요?");
 			System.out.println(BAR);
-			System.out.println("0. 메뉴표시\t\t1. 주문 추가");
+			System.out.println("0. 메뉴 표시\t\t1. 주문 추가");
 			System.out.println("2. 주문 제거\t\t3. 주문 확인");
 			System.out.println("4. 결제 요청\t\t5. 메인메뉴로");  
 			System.out.println(BAR);
@@ -224,7 +214,6 @@ public class Main {
 				case 5:
 					System.out.println("메인 메뉴로 돌아갑니다.");
 					flag = true;
-					break;
 				}
 			} else {
 				System.out.println("0~5까지 범위의 숫자를 입력해 주세요");	
@@ -311,27 +300,26 @@ public class Main {
 	//#.입력: 테이블 번호(범위:변수 테이블번호 업데이트) (입력하는건 메인클래스 밖에서쓰지말자 ㅠ
 
 	public static String inputTableNumber() {
-		boolean flag = false;
-		String Table = " ";
+		String Table = null;
+		boolean flag =false;
 		while (!flag) {
 			System.out.println(
-					Setting.ROW_START + "~" + Setting.ROW_END + "와" + Setting.COL_START + "~" + Setting.COL_END + " 범위의 좌석을 입력하세요 (예: B3):");
+			Setting.ROW_START + "~" + Setting.ROW_END + "와" + Setting.COL_START + "~" + Setting.COL_END + " 범위의 좌석을 입력하세요 (예: B3):");
 			Table = sc.nextLine().toUpperCase(); // 대문자 자동 변환
 			System.out.println(BAR);
-
 			// 정규식 생성
 			String regex = "[" + Setting.ROW_START + "-" + Setting.ROW_END + "]" + "[" + Setting.COL_START + "-" + Setting.COL_END + "]";
-
 			// 입력된 좌석이 범위 내에 있는지 확인
 			if (Pattern.matches(regex, Table)) {
 				flag = true;
 			} else {
 				System.out.println("입력이 올바르지 않습니다. " + Setting.ROW_START + "~" + Setting.ROW_END + "와" + Setting.COL_START + "~" + Setting.COL_END
 						+ " 범위의 좌석을 입력해주세요.");
+				flag =false;
 			}
 		} // end of while
 		return Table;
-	}// end of getSeatNumber
+	}// end of inputTableNumber
 
 	//#.입력: 테이블 파일명 입력
 
@@ -380,16 +368,14 @@ public class Main {
 		tableNumber.append(table);							// 새로운 테이블 번호를 저장합니다
 	}
 
-	//#.테이블 디렉토리가 비여있을 경우 메인선택창으로 돌아가기 
-
-	public static void toMainIfDirIsEmpty() {
+	//#.테이블 디렉토리가 비여있을 경우 첫테이블 배정 메소드로
+	public static void toAddTifEmpty() {
 		File dir = new File(Setting.TABLE_DIR);
 		File[] files = dir.listFiles();
 		if (files != null && files.length > 0) {
-			// 디렉토리가 비어 있지 않습니다. 다음 단계로 넘어감
 		} else {
-			System.out.println("테이블이 없습니다.");
-			introMenu();  // introMenu 메소드를 호출
+		System.out.println("테이블이 없습니다.");	
+		addATable();
 		}
 	}
 	//2. 선택한 테이블 주문 삭제
@@ -410,7 +396,6 @@ public class Main {
 		orderManager.removeOrderItem(food.getId(), table);
 		Main.updateTableFile();
 	}
-
 }//end of Main class
 
 

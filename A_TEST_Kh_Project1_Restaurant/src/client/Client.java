@@ -22,8 +22,8 @@ public class Client {
 	
 	// 로그인 클라이언트
 	public static void loginClient() { 
-		boolean isLoginSuccess = false;
-		while (!isLoginSuccess) {
+		boolean isLoginSuccess =false;
+		while(!isLoginSuccess){
 			try {
 				// 서버에 연결
 				Socket socket = new Socket(Setting.SERVER_IP, Setting.LOG_IN_PORT);
@@ -36,8 +36,9 @@ public class Client {
 				System.out.println(Main.BAR);
 
 				// 로그인 시도
-				isLoginSuccess = loginProcess(socket, reader);
-
+				loginProcess(socket, reader);
+				isLoginSuccess=false;
+				
 				// 소켓 닫기
 				socket.close();
 			} catch (Exception e) {
@@ -47,7 +48,7 @@ public class Client {
 	}
 
 	// 로그인 과정처리+서버통신
-	private static boolean loginProcess(Socket socket, BufferedReader reader) {
+	private static void loginProcess(Socket socket, BufferedReader reader) {
 		try {
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
@@ -75,26 +76,20 @@ public class Client {
 			// 로그인 성공 여부 확인
 			if (response.equals("ADMIN")) {
 				System.out.println("관리자로 로그인하셨습니다.");
-				adminClient();	
-				return true;
 			} else if (response.equals("STAFF")) {
 				System.out.println("직원으로 로그인하셨습니다.");
-				Main.introMenu();
 				System.out.println(Main.BAR);
-				return true;
 			} else {
 				System.out.println("로그인 정보가 올바르지 않습니다. 다시 시도해주세요.");
-				return false;
 			}
 		} catch (Exception e) {
 			System.out.println(e);
-			return false;
 		}
 	}
 
 	//관리자 클라이언트                   
 	public static void adminClient() {
-	    boolean flag = false;
+		boolean flag = false;;
 	    while (!flag) {
 	        System.out.print("1.직원 추가,2,직원 삭제,3,메인 메뉴 ");
 	        String action = Main.sc.nextLine();
@@ -102,21 +97,15 @@ public class Client {
 	        switch (action) {
 	        case "1": 
 	            adminProcess(action);
-	            flag = true;
-	            break;
 	        case "2":
 	            adminProcess(action);
-	            flag = true;
-	            break;
 	        case "3":
-	            Main.introMenu();
+	            Main.introMenu(false);
 	            System.out.println(Main.BAR);
-	            flag = true;
-	            break;
 	        default:
 	            System.out.println("1, 2, 또는 3을 입력하세요.");
 	            System.out.println(Main.BAR);
-	            break;
+	            flag=false;
 	        }
 	    }
 	}

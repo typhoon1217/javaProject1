@@ -17,7 +17,7 @@ public class Order {
 	public static FoodList foodList = FoodList.getInstance();
 	//2.5 영수증 (결제하시겠습니까?)
 
-	public static void printReceipt() {
+	public static boolean printReceipt() {
 		// 주문 목록을 출력합니다
 		System.out.println(Main.BAR);
 		displayOrderList();
@@ -26,7 +26,6 @@ public class Order {
 		System.out.println(Main.BAR);
 		System.out.println("결제하시겠습니까? (1: 예, 2: 아니오)");
 		boolean pay = Main.Input1or2();
-
 		if (pay) {
 			// 총 금액을 계산합니다
 			int totalPrice = orderManager.getTotalPrice();
@@ -34,10 +33,11 @@ public class Order {
 			// 총 금액을 출력하고 감사 메시지를 표시합니다
 			System.out.println("총 금액은 " + totalPrice + " 원 입니다. 감사합니다  \n다음에 또 " +Setting.R_NAME+ "에 방문해 주십시오");
 			Main.delFileInTableNum(); //지정된 테이블 삭제
-			Main.introMenu();
+			return false;//인트로 메뉴 반복
 		} else {
 			System.out.println("결제를 취소하셨습니다.");
 		}
+		return true;//인트로 메뉴 반복 종료
 	}
 
 	//2.1 주문 추가
