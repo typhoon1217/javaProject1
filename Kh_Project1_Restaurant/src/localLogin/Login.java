@@ -45,7 +45,8 @@ public class Login {
 		case "3":
 			System.out.println(Main.BAR);
 			System.out.println("메인메뉴 실행.");
-			Main.introMenu();	
+			Main.introMenu(false);	
+			break;
 		}
 	}
 	public static void login() {
@@ -75,7 +76,7 @@ public class Login {
 						LogInInterface employeeLogin = new Employee();
 						if (employeeLogin.logIn(user)) {
 							System.out.println("직원 로그인 성공");
-							Main.introMenu();	
+							Main.introMenu(false);	
 							loggedIn = true;
 						} else {
 							System.out.println("로그인 실패");

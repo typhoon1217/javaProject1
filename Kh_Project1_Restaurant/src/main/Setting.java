@@ -17,7 +17,9 @@ public class Setting {	//싱글톤 연습
     private String[][] tableArray;							//테이블 어레이
     
     //서버 설정 정보
-    public static final String SERVER_IP = "::1";			// 서버 IP 주소
+    //로컬"127.0.0.1";  
+    //"192.168.20.254"; 발표용
+    public static final String SERVER_IP = "127.0.0.1";			// 서버 IP 주소
 	public static final int LOG_IN_PORT = 7913; 			// 서버 포트 번호 
 	public static final int ADMIN_PORT = 1217; 				// 서버 포트 번호
 
