@@ -16,35 +16,38 @@ public class Client {
 	
 	//기능 테스트용
 	public static void main(String[] args) {
-		loginClient();
-//		adminClient();
+//		loginClient();
+		adminClient();
 	}
 	
 	// 로그인 클라이언트
 	public static void loginClient() { 
-		try {
-			// 서버에 연결
-			Socket socket = new Socket(Setting.SERVER_IP, Setting.LOG_IN_PORT);
+		boolean isLoginSuccess = false;
+		while (!isLoginSuccess) {
+			try {
+				// 서버에 연결
+				Socket socket = new Socket(Setting.SERVER_IP, Setting.LOG_IN_PORT);
 
-			// 사용자 입력을 받기 위한 BufferedReader 객체 생성
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+				// 사용자 입력을 받기
+				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-			// 아이디와 비밀번호 입력 요청 출력
-			System.out.println("로그인 하시오");
-			System.out.println(Main.BAR);
+				// 아이디와 비밀번호 입력 요청 출력
+				System.out.println("로그인 하시오");
+				System.out.println(Main.BAR);
 
-			// 로그인 시도
-			loginProcess(socket, reader);
+				// 로그인 시도
+				isLoginSuccess = loginProcess(socket, reader);
 
-			// 소켓 닫기
-			socket.close();
-		} catch (Exception e) {
-			System.out.println(e);
+				// 소켓 닫기
+				socket.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		}
 	}
 
 	// 로그인 과정처리+서버통신
-	private static void loginProcess(Socket socket, BufferedReader reader) {
+	private static boolean loginProcess(Socket socket, BufferedReader reader) {
 		try {
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
@@ -73,43 +76,51 @@ public class Client {
 			if (response.equals("ADMIN")) {
 				System.out.println("관리자로 로그인하셨습니다.");
 				adminClient();	
-				//RestaurantMain.AdminMenu();//관리자 메뉴
+				return true;
 			} else if (response.equals("STAFF")) {
 				System.out.println("직원으로 로그인하셨습니다.");
 				Main.introMenu();
-				//RestaurantMain.introMenu();			//메인메뉴
 				System.out.println(Main.BAR);
+				return true;
 			} else {
 				System.out.println("로그인 정보가 올바르지 않습니다. 다시 시도해주세요.");
-				loginClient(); 							// 실패한 경우 다시 로그인을 호출
+				return false;
 			}
 		} catch (Exception e) {
 			System.out.println(e);
+			return false;
 		}
 	}
 
-	//관리자 클라이언트
+	//관리자 클라이언트                   
 	public static void adminClient() {
-		// 액션 입력 받기 (1, 2, 또는 3만 허용)
-		System.out.print("직원 추가: 1, 직원 삭제: 2, 새 액션: 3, 메인 메뉴");
-		String action = Main.sc.nextLine();
-		System.out.println(Main.BAR);
-		switch (action) {
-		case "1":
-			adminProcess(action);
-		case "2":
-			adminProcess(action);
-			break;
-		case "3":
-			Main.introMenu();
-			System.out.println(Main.BAR);
-			break;
-		default:
-			System.out.println("1, 2, 또는 3을 입력하세요.");
-			System.out.println(Main.BAR);
-			adminClient();
-		}
+	    boolean flag = false;
+	    while (!flag) {
+	        System.out.print("1.직원 추가,2,직원 삭제,3,메인 메뉴 ");
+	        String action = Main.sc.nextLine();
+	        System.out.println(Main.BAR);
+	        switch (action) {
+	        case "1": 
+	            adminProcess(action);
+	            flag = true;
+	            break;
+	        case "2":
+	            adminProcess(action);
+	            flag = true;
+	            break;
+	        case "3":
+	            Main.introMenu();
+	            System.out.println(Main.BAR);
+	            flag = true;
+	            break;
+	        default:
+	            System.out.println("1, 2, 또는 3을 입력하세요.");
+	            System.out.println(Main.BAR);
+	            break;
+	        }
+	    }
 	}
+
 	
 	public static void adminProcess(String action) {
 	    try {

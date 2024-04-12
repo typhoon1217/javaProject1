@@ -81,7 +81,4 @@ public class Order {
 			System.out.println("입력하신 테이블이 존재하지 않습니다.");
 		}
 	}
-	
-	
-
 }

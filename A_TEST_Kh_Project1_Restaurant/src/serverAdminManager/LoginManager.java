@@ -21,7 +21,7 @@ public class LoginManager {
     }
 
     // 파일읽어서 해시맵에 저장하는 메서드
-    private void loadCredentials(String filePath, Map<String, String> credentials) {
+    public void loadCredentials(String filePath, Map<String, String> credentials) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {

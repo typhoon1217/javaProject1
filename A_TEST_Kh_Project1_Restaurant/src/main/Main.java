@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import client.Client;
 import food.Food;
+import food.FoodList;
 import order.Order;
 import order.OrderManager;
 
@@ -17,6 +18,7 @@ public class Main {
 	public static StringBuffer tableNumber = new StringBuffer();
 	public static final String BAR = "=========================================";
 
+	public static FoodList foodList = FoodList.getInstance();
 	//메인 +테이블관리
 
 	public static void main(String[] args) {
@@ -28,11 +30,12 @@ public class Main {
 
 	public static void reset() {			
 		//
-		Client.loginClient();				//클라이언트 로그인
+		//Client.loginClient();				//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
 
 		//기능 테스트용
+		Order.foodList.displayMenu();
 		//Client.adminClient(); 			//관리자 클라이언트
 		//introMenu();	                    //초기메뉴
 		//menuLoadTable();                  //주문메뉴
@@ -45,7 +48,7 @@ public class Main {
 		settingManager.listAllTable();
 		String greeting = "안녕하세요 " + Setting.R_NAME + "에 방문해주셔서 감사합니다.";
 		String regexMenu = "([0-4])"; // 입력값 범위
-		boolean flag = false;
+															boolean flag = false;
 		while (!flag) {
 			System.out.println(BAR);
 			System.out.println(greeting);
@@ -173,6 +176,8 @@ public class Main {
 	//2 주문 메뉴
 
 	public static void menuLoadTable() {
+		Scanner sc2 = new Scanner(System.in); 
+		
 		toMainIfDirIsEmpty();
 		settingManager.listAllTable();
 		System.out.println(BAR);
@@ -191,13 +196,14 @@ public class Main {
 			System.out.println(BAR);
 			System.out.println("원하는 메뉴 번호를 입력하세요:");
 			System.out.println(BAR);
-			String choice = sc.nextLine();
+			String choice = sc2.nextLine();
 			System.out.println(BAR);
 			if (Pattern.matches(regex, choice)) {
 				switch (Integer.parseInt(choice)) {
 				case 0:
 					System.out.println("메뉴를 표시합니다.");
-					Order.foodList.displayMenu();
+					FoodList foodList = FoodList.getInstance();
+					foodList.displayMenu();
 					break;
 				case 1:
 					System.out.println("주문을 추가합니다.");

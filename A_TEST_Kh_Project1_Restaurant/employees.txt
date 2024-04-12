@@ -1,8 +1,8 @@
-a,1
-1,1
-johnDoe,pass123
-sarahKim,skyBlue789
-michaelChoi,mc2024
+a 1
+1 1
+johnDoe pass123
+sarahKim skyBlue789
+michaelChoi mc2024
 davidLee,dl879
 emmaChung,ec1112
 jamesHan,jh1314
