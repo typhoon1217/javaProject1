@@ -1,9 +1,7 @@
 package serverAdminManager;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +11,7 @@ public class LoginManager {
     // 로그인 정보를 저장하는 해시맵
     private Map<String, String> adminCredentials;
     private Map<String, String> staffCredentials;
-    
-    // 인스턴스 생성 메서드
-    public LoginManager createNewInstance() {
-        return new LoginManager();
-    }
-    
+
     // 생성자: 로그인 정보를 로드함
     public LoginManager() {
         adminCredentials = new HashMap<>();
@@ -51,35 +44,8 @@ public class LoginManager {
         }
     }
 
-    public synchronized boolean addEmployee(String id, String password) {
-        if (!staffCredentials.containsKey(id)) {
-        	staffCredentials.put(id, password);
-            saveCredentials("staff.txt");
-            return true; // 성공
-        } else {
-            return false; // 실패: 이미 존재하는 ID
-    }
-    }
-
-    public synchronized boolean deleteEmployee(String id) {
-        if (staffCredentials.containsKey(id)) {
-        	staffCredentials.remove(id);
-            saveCredentials("staff.txt");
-            return true; // 성공
-        } else {
-            return false; // 실패: 해당 ID가 존재하지 않음
-        }
-    }
-
-    private synchronized void saveCredentials(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (Map.Entry<String, String> entry : staffCredentials.entrySet()) {
-                writer.write(entry.getKey() + " " + entry.getValue());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // 인스턴스 생성 메서드
+    public static LoginManager createNewInstance() {
+        return new LoginManager();
     }
 }
-
