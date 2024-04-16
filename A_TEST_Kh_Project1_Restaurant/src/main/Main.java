@@ -27,23 +27,24 @@ public class Main {
 
 	//초기화면
 
-	public static void reset() {			
-		//Client.loginClient();				//클라이언트 로그인
+	public static void reset() {
+		Client.loginClient();				//클라이언트 로그인
 		//login();							//로그인 
 		//최초 선택창
 
 		//기능 테스트용
 		//Order.foodList.displayMenu();
 		//Client.adminClient(); 			//관리자 클라이언트
-		introMenu(false);	                    //초기메뉴
+		//introMenu();	                    //초기메뉴
 		//menuLoadTable();                  //주문메뉴
 		//Main_Server.serverStart(); 					//테스트 서버 시작		
 	}
 
 	//인트로 메뉴
 
-	public static boolean introMenu( boolean flag) {
+	public static void introMenu() {
 		String greeting = "안녕하세요 " + Setting.R_NAME + "에 방문해주셔서 감사합니다.";
+		boolean flag = false;
 		while (!flag) {
 			settingManager.listAllTable();
 			System.out.println(BAR);
@@ -70,10 +71,11 @@ public class Main {
 					break;
 				case 2:
 					System.out.println("주문 받기를 선택하셨습니다.");
-					menuLoadTable(flag);
+					menuLoadTable();
 					break;
 				case 3:
-					System.out.println("프로그램을 종료합니다.");
+					System.out.println("프로그램을 종료를 선택하셨습니다.");
+					flag=true;
 					break;
 				case 4:
 					System.out.println("테이블 삭제를 선택하셨습니다.");
@@ -82,11 +84,11 @@ public class Main {
 				}// end of switch
 			} else {
 				System.out.println("0~4 까지 범위의 숫자를 입력해 주세요");
-			}flag=false;
+				flag=false;
+			}
 		}   // end of while
 		sc.close();
 		System.out.println("프로그램이 종료되었습니다.");
-		return flag;
 	}// end of introMenu
 
 	//1.0메인메뉴: 테이블 변경
@@ -167,8 +169,7 @@ public class Main {
 
 	//2 주문 메뉴
 
-	public static void menuLoadTable(boolean flag) {
-		Scanner sc2 = new Scanner(System.in); 
+	public static void menuLoadTable() {
 		toAddTifEmpty();
 		settingManager.listAllTable();
 		System.out.println(BAR);
@@ -177,6 +178,7 @@ public class Main {
 		System.out.print("안녕하세요 ");
 
 		String regex = "([0-5])";	
+		boolean flag = false;
 		while (!flag) {										//display order list 추가하까? 하면 3번 삭제 ㄱ
 			System.out.println(tableNumber + " 테이블 고객님, 무엇을 도와드릴까요?");
 			System.out.println(BAR);
@@ -186,7 +188,7 @@ public class Main {
 			System.out.println(BAR);
 			System.out.println("원하는 메뉴 번호를 입력하세요:");
 			System.out.println(BAR);
-			String choice = sc2.nextLine();
+			String choice = sc.nextLine();
 			System.out.println(BAR);
 			if (Pattern.matches(regex, choice)) {
 				switch (Integer.parseInt(choice)) {
