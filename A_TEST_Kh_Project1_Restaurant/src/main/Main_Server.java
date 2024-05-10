@@ -53,9 +53,7 @@ public class Main_Server {
 			System.out.println("접속 수락"+s+"#s는 테스트용 실제론 보안때문에 보여주지 말것.");
 			DataInputStream dis = new DataInputStream(s.getInputStream());
 			LoginManager loginManager = new LoginManager();
-			System.out.println("뭔일?1");
 			for (int loginFailures = 0; loginFailures < 5 ; loginFailures++) { // 로그인 시도 횟수가 5회 미만인 경우 반복
-				System.out.println("뭔일?2");
 				String id = dis.readUTF(); // 클라이언트로부터 아이디 읽기 
 				String password = dis.readUTF(); // 클라이언트로부터 비밀번호 읽기
 				
@@ -92,36 +90,45 @@ public class Main_Server {
 	public static void adminSever(Socket s) {
 		LoginManager loginManager = new LoginManager();
 		boolean result = false;
+		boolean three = false;
+		int action = 0;
 		
 		System.out.println("adminSever Activated"+s+"#s는 테스트용 실제론 보안때문에 보여주지 말것.");
-
+		
         try {
             DataInputStream dis = new DataInputStream(s.getInputStream());
             DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
+            while (!three) {
+                action = dis.readInt();
+            	System.out.println("action:"+action);
+            	if (action==3) {
+            		three=true;
+            	}
             // 클라이언트로부터 요청 받기
-            boolean action = dis.readBoolean();
-            String id = dis.readUTF();
-            String password = dis.readUTF();
+            if(action!=3) {
+            	 String id = dis.readUTF();
+                 String password = dis.readUTF();
 
-            System.out.println("Admin Server: Action: " + action + ", ID: " + id + ", Password: " + password+"#비밀번호는 보안문제로 실제로는 보여주면 안됨");
-
-            // 요청에 따라 처리
-            if (action) {
-                // 직원 추가 요청 처리
-                result = loginManager.addEmployee(id, password);
-                System.out.println("Admin Server: 직원 추가 결과: " + result);
-            } else {
-                // 직원 삭제 요청 처리
-                result = loginManager.deleteEmployee(id);
-                System.out.println("Admin Server: 직원 삭제 결과: " + result);
+                 System.out.println("Admin Server: Action: " + action + ", ID: " + id + ", Password: " + password+"#비밀번호는 보안문제로 실제로는 보여주면 안됨");
+                 // 요청에 따라 처리
+                 
+                 	if (action==1) {
+                         // 직원 추가 요청 처리
+                         result = loginManager.addEmployee(id, password);
+                         System.out.println("Admin Server: 직원 추가 결과: " + result);
+                     } else if(action==2){
+                         // 직원 삭제 요청 처리
+                         result = loginManager.deleteEmployee(id);
+                         System.out.println("Admin Server: 직원 삭제 결과: " + result);
+                     }
+                     // 클라이언트에 결과 전송
+                     dos.writeBoolean(result);
+                     dos.flush(); // 스트림을 플러시하여 버퍼를 비움
+                     System.out.println("Admin Server: 클라이언트에 결과 전송: " + result);
             }
-
-            // 클라이언트에 결과 전송
-            dos.writeBoolean(result);
-            dos.flush(); // 스트림을 플러시하여 버퍼를 비움
-
-            System.out.println("Admin Server: 클라이언트에 결과 전송: " + result);
+           
+            }
         } catch (IOException e) {
         }
     }

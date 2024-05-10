@@ -41,7 +41,8 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("가 종료되었습니다.");
+		Main.introMenu();
+		//System.out.println("가 종료되었습니다.");
 	}
 
 	// 로그인 과정처리+서버통신
@@ -105,81 +106,73 @@ public class Client {
 			System.out.println(Main.BAR);
 			switch (action) {
 			case "1": 
-				adminProcess(true,s);
+				System.out.println("직원 추가");
+				adminProcess(1,s); 
 				break;
 			case "2":
-				adminProcess(false,s);
+				System.out.println("직원 삭제");
+				adminProcess(2,s);
 				break;
 			case "3":
+				DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+				//dos.writeInt(3);
 				flag=true;
-				Main.introMenu();
-				System.out.print("Client");
-				s.close();
 				break;
 			default:
 				System.out.println("1, 2, 또는 3을 입력하세요.");
 				System.out.println(Main.BAR);
-
 			}
 		}
 	}
+	
+	public static void adminProcess(int choice, Socket socket) {
 
+	    try {
+	        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+	        DataInputStream dis = new DataInputStream(socket.getInputStream());
 
-	public static void adminProcess(boolean isThisAdd,Socket socket) {
-		String add = "?add?";
-		boolean success = true;
-		try {
-			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-			DataInputStream dis = new DataInputStream(socket.getInputStream());
+            dos.writeInt(choice);
+            
+	        if(choice != 3) {
+	            // 아이디 입력 받기
+	            String idOut = enterId();
 
-			if(isThisAdd){
-				add="추가";
-			}else if(!isThisAdd){
-				add="삭제";
-			}
+	            // 직원 삭제인 경우 비밀번호를 묻지 않음
+	            String pwOut = "";
+	            if (choice == 1) {
+	                // 비밀번호 입력 받기
+	                pwOut = enterPassword();
+	            }
 
-			while(success) { 
-				System.out.println("-"+add+"기능-");
-				// 아이디 입력 받기
-				String idOut = enterId();
+	            // 서버로 요청 보내기
+	            dos.writeUTF(idOut);
+	            dos.writeUTF(pwOut);
 
-				// 직원 삭제인 경우 비밀번호를 묻지 않음
-				String pwOut = "";
-				if (isThisAdd) {
-					// 비밀번호 입력 받기
-					System.out.println("비밀번호를 입력하세요");
-					pwOut = enterPassword();
-				}
+	            // 서버로부터 응답 받기
+	            boolean response = dis.readBoolean();
+	            System.out.println("서버로부터의 응답: " + response);
 
-				// 서버로 요청 보내기
-				dos.writeBoolean(isThisAdd);
-				dos.writeUTF(idOut);
-				dos.writeUTF(pwOut);
+	            // 응답에 따라 적절한 메소드 호출
+	            if (response) {
+	                if (choice == 1) {
+	                    System.out.println("직원 추가 성공");
+	                } else if (choice == 2) {
+	                    System.out.println("직원 삭제 성공");
+	                }
+	            } else {
+	                if (choice == 1) {
+	                    System.out.println("직원 추가 실패");
+	                } else if (choice == 2) {
+	                    System.out.println("직원 삭제 실패");
+	                }
+	            }
+	        }
 
-				// 서버로부터 응답 받기
-				boolean response = dis.readBoolean();
-				System.out.println("서버로부터의 응답: " + response);
-
-				// 응답에 따라 적절한 메소드 호출
-				if (response) {
-					if (isThisAdd) {
-						System.out.println("직원 추가 성공");
-					} else if (!isThisAdd) {
-						System.out.println("직원 삭제 성공");
-					}
-				} else if(!response){
-					if (isThisAdd) {
-						System.out.println("직원 추가 실패");
-					}else if (!isThisAdd){
-						System.out.println("직원 삭제 실패");
-					}
-					success=response;
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 	// 아이디 입력 메소드
 	public static String enterId() {
@@ -212,6 +205,4 @@ public class Client {
 		System.out.println(Main.BAR);
 		return password;
 	}
-
-
 }

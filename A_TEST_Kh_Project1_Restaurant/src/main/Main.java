@@ -29,6 +29,7 @@ public class Main {
 
 	public static void reset() {
 		Client.loginClient();				//클라이언트 로그인
+		introMenu();
 		//login();							//로그인 
 		//최초 선택창
 
